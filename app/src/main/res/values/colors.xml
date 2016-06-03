@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="radar_color_line">#9D00ff00</color>
+    <color name="radar_color_light">#ddeeffee</color>
+    <color name="radar_color_bg">#4C000000</color>
+
+</resources>
