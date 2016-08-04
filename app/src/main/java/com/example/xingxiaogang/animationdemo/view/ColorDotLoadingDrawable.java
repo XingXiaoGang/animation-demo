@@ -1,4 +1,4 @@
-package com.example.xingxiaogang.animationdemo;
+package com.example.xingxiaogang.animationdemo.view;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

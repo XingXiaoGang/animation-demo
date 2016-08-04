@@ -1,7 +1,7 @@
 package com.example.xingxiaogang.animationdemo;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -11,6 +11,9 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.xingxiaogang.animationdemo.view.ColorDotLoadingDrawable;
+import com.example.xingxiaogang.animationdemo.view.RadarView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -68,13 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.loading_window: {
-                ProgressDialog progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("请稍后");
-                progressDialog.setMessage("正在扫描..");
-//                Drawable loadingDrawable = new FoldingCirclesDrawable.Builder(this).build();
-                ColorDotLoadingDrawable drawable = new ColorDotLoadingDrawable();
-                progressDialog.setIndeterminateDrawable(drawable);
-                progressDialog.show();
+                AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setView(R.layout.dialog_layout).create();
+                dialog.show();
                 break;
             }
         }

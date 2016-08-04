@@ -1,4 +1,4 @@
-package com.example.xingxiaogang.animationdemo;
+package com.example.xingxiaogang.animationdemo.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,6 +9,8 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+
+import com.example.xingxiaogang.animationdemo.R;
 
 /**
  * Created by xingxiaogang on 2016/6/21.

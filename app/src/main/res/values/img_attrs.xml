@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SizeBaseImageView">
+        <attr name="src" format="reference" />
+        <attr name="imageScale" format="float" />
+        <attr name="baseWith" format="enum">
+            <enum name="height" value="0"/>
+            <enum name="width" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

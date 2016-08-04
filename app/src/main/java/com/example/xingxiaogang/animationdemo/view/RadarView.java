@@ -1,4 +1,4 @@
-package com.example.xingxiaogang.animationdemo;
+package com.example.xingxiaogang.animationdemo.view;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+
+import com.example.xingxiaogang.animationdemo.R;
 
 /**
  * Created by xingxiaogang on 2016/6/2.
