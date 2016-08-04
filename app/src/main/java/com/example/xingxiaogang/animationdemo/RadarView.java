@@ -25,8 +25,6 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
     private Paint mPaintSector;
 
     private int progress = 0;
-    //线条的宽度
-    private int lineWidth;
     private Shader mShader;
     private Matrix matrix = new Matrix();
     //    private ViewAnimator mViewAnimator;
@@ -34,10 +32,10 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
 
     private int mWidth;
     private int mHeight;
-    private long mStopPoint;
+    private long mStartOffset = 320;
 
     //一圈的时间
-    private int ROUND_SPEED = 800;
+    private int ROUND_SPEED = 1000;
     private int STOP_DURATION = 2000;
 
     public RadarView(Context context) {
@@ -51,9 +49,8 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
     }
 
     private void init(final Context context) {
-        lineWidth = dp2px(getContext(), 2.5f);
         mPaintLine = new Paint();
-        mPaintLine.setStrokeWidth(lineWidth);
+        mPaintLine.setStrokeWidth(dp2px(getContext(), 2.5f));
         mPaintLine.setAntiAlias(true);
         mPaintLine.setStyle(Paint.Style.STROKE);
         mPaintLine.setColor(Color.WHITE);
@@ -103,6 +100,7 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
         if (mShader == null) {
             mShader = new SweepGradient(mWidth / 2, mHeight / 2, Color.TRANSPARENT, mPaintSector.getColor());
         }
+        matrix.setRotate(mStartOffset, getWidth() / 2, getHeight() / 2);
     }
 
     //一圈的速度
@@ -126,7 +124,7 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
 
     //开始
     public void start() {
-        mStopPoint = 0;
+        mStartOffset = 0;
         mShader = new SweepGradient(mWidth / 2, mHeight / 2, Color.TRANSPARENT, mPaintSector.getColor());
         mValueAnimator = ValueAnimator.ofInt(0, 360);
         mValueAnimator.setRepeatCount(-1);
@@ -141,24 +139,20 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
     //停止
     public void stop() {
         mValueAnimator.cancel();
-        mStopPoint = (int) mValueAnimator.getAnimatedValue();
+        mStartOffset = (int) mValueAnimator.getAnimatedValue();
     }
 
     //平滑停止
     public void stopFlat() {
         mValueAnimator.cancel();
         int progress = (int) mValueAnimator.getAnimatedValue();
-        mStopPoint = progress;
+        mStartOffset = progress;
         mValueAnimator.setDuration(STOP_DURATION);
         mValueAnimator.setInterpolator(new DecelerateInterpolator());
         mValueAnimator.setFloatValues(progress, progress + 180);
         mValueAnimator.setRepeatCount(0);
         mValueAnimator.start();
         mValueAnimator.addListener(this);
-    }
-
-    protected ValueAnimator getValueAnimator() {
-        return mValueAnimator;
     }
 
     public static int dp2px(@NonNull Context context, float dp) {
@@ -203,7 +197,7 @@ public class RadarView extends ImageView implements ValueAnimator.AnimatorUpdate
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
         progress = (int) animation.getAnimatedValue();
-        progress += mStopPoint;
+        progress += mStartOffset;
         matrix.reset();
         matrix.setRotate(progress, mWidth >> 1, mHeight >> 1);
         invalidate();

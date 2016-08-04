@@ -78,6 +78,12 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/radar_bg" />
 
+    <ImageView
+        android:id="@+id/loading_icon"
+        android:layout_width="30dp"
+        android:layout_height="10dp"
+        android:scaleType="centerCrop" />
+
     <Button
         android:id="@+id/start"
         android:layout_width="match_parent"
@@ -89,5 +95,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="平滑中断" />
+
+    <Button
+        android:id="@+id/loading_window"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="弹窗" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.xingxiaogang.animationdemo;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -35,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bigIconScanView = (RadarView) findViewById(R.id.icon_big);
         findViewById(R.id.start).setOnClickListener(this);
         findViewById(R.id.stop).setOnClickListener(this);
+        findViewById(R.id.loading_window).setOnClickListener(this);
+
+        ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable();
+        ((ImageView) findViewById(R.id.loading_icon)).setImageDrawable(colorDotLoadingDrawable);
+        colorDotLoadingDrawable.start(400);
+
+        initAnimation();
     }
 
     @Override
@@ -48,13 +56,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start: {
-                iconScanView.start();
+//                iconScanView.start();
                 bigIconScanView.start();
+//                bigIconScanView.startAnimation(mRotateAnimation);
                 break;
             }
             case R.id.stop: {
-                iconScanView.stopFlat();
+//                iconScanView.stopFlat();
                 bigIconScanView.stopFlat();
+//                bigIconScanView.clearAnimation();
+                break;
+            }
+            case R.id.loading_window: {
+                ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("请稍后");
+                progressDialog.setMessage("正在扫描..");
+//                Drawable loadingDrawable = new FoldingCirclesDrawable.Builder(this).build();
+                ColorDotLoadingDrawable drawable = new ColorDotLoadingDrawable();
+                progressDialog.setIndeterminateDrawable(drawable);
+                progressDialog.show();
                 break;
             }
         }
