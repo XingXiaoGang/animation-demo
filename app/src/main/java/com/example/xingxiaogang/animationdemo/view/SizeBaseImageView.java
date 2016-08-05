@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,8 +19,8 @@ import com.example.xingxiaogang.animationdemo.R;
  */
 public class SizeBaseImageView extends View {
 
-    private static final boolean DEBUG = true;
-    private static final String TAG = "test.SizeBaseImageView";
+    protected static final boolean DEBUG = true;
+    protected static final String TAG = "test.SizeBaseImageView";
 
     private static final int BASE_WIDTH = 1;
     private static final int BASE_HEIGHT = 0;
@@ -63,6 +64,7 @@ public class SizeBaseImageView extends View {
 
     public void setImageBitMap(Bitmap bitmap) {
         mOriginBitmap = bitmap;
+        requestLayout();
     }
 
     //转换成比较优化的大小
@@ -115,6 +117,14 @@ public class SizeBaseImageView extends View {
             }
         }
         return bitmap;
+    }
+
+    public Bitmap getBitmap() {
+        return mBitmap;
+    }
+
+    public Rect getDrawRect() {
+        return mBitmapRect;
     }
 
     @Override
@@ -173,6 +183,7 @@ public class SizeBaseImageView extends View {
         super.onDraw(canvas);
 
         if (mBitmap != null) {
+            canvas.drawColor(Color.TRANSPARENT);
             canvas.drawBitmap(mBitmap, mBitmapRect, mBitmapRect, null);
         }
 

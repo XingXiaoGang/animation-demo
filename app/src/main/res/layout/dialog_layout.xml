@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/radar_color_light"
     android:orientation="vertical">
 
-    <com.example.xingxiaogang.animationdemo.view.SizeBaseImageView
+    <com.example.xingxiaogang.animationdemo.view.BubbleImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:src="@drawable/default_wallpaper"
+        app:angleWidth="8dp"
         app:baseWith="width"
-        app:imageScale="0.8"/>
+        app:imageScale="0.8"
+        app:radius="5dp"
+        app:src="@drawable/default_wallpaper" />
 
     <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--android:src="@drawable/default_wallpaper" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:src="@drawable/default_wallpaper" />-->
 
 </LinearLayout>
