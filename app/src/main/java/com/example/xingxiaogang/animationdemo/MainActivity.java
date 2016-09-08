@@ -18,7 +18,7 @@ import com.example.xingxiaogang.animationdemo.view.RadarView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RadarView iconScanView;
-    private RadarView bigIconScanView;
+    //    private RadarView bigIconScanView;
     private ImageView smallImageView;
     private Animation mRotateAnimation;
     private Animation mScaleAnimation;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         smallImageView = (ImageView) findViewById(R.id.small_icon);
         mTitle = (TextView) findViewById(R.id.title);
         mDescription = (TextView) findViewById(R.id.description);
-        bigIconScanView = (RadarView) findViewById(R.id.icon_big);
+//        bigIconScanView = (RadarView) findViewById(R.id.icon_big);
         findViewById(R.id.start).setOnClickListener(this);
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.loading_window).setOnClickListener(this);
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         iconScanView.stopFlat();
-        bigIconScanView.stopFlat();
+//        bigIconScanView.stopFlat();
     }
 
     @Override
@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.start: {
 //                iconScanView.start();
-                bigIconScanView.start();
+//                bigIconScanView.start();
 //                bigIconScanView.startAnimation(mRotateAnimation);
                 break;
             }
             case R.id.stop: {
 //                iconScanView.stopFlat();
-                bigIconScanView.stopFlat();
+//                bigIconScanView.stopFlat();
 //                bigIconScanView.clearAnimation();
                 break;
             }

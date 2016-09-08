@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -20,7 +21,8 @@ import com.example.xingxiaogang.animationdemo.R;
  */
 public class BubbleImageView extends SizeBaseImageView {
 
-    private Path mShapePath;
+    private Path mRightTopCorner;
+    private Path mLeftShapePath;
     private RectF mRightTopArc;
     private int mAngleWidth;
     private int mRadius;
@@ -51,7 +53,8 @@ public class BubbleImageView extends SizeBaseImageView {
         }
         a.recycle();
 
-        mShapePath = new Path();
+        mRightTopCorner = new Path();
+        mLeftShapePath = new Path();
         mRightTopArc = new RectF();
     }
 
@@ -68,21 +71,44 @@ public class BubbleImageView extends SizeBaseImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        final Path path = mShapePath;
         final Rect displayRect = getDrawRect();
+
+        //1.切掉左边的
+        final Path left = mLeftShapePath;
+        left.reset();
+        left.moveTo(displayRect.left, displayRect.top);
+        left.lineTo(displayRect.left + mAngleWidth, (float) (displayRect.top + Math.sqrt(mAngleWidth * mAngleWidth * 2)));
+        left.lineTo(displayRect.left + mAngleWidth, displayRect.bottom);
+        left.lineTo(displayRect.left, displayRect.bottom);
+        left.lineTo(displayRect.left, displayRect.top);
+        left.close();
+        try {
+            canvas.clipPath(left, Region.Op.DIFFERENCE);
+        } catch (Exception e) {
+            if (DEBUG) {
+                Log.e(TAG, "onDraw: clipPath error :", e);
+            }
+        }
+
+        //2.切右上角的圆弧
+        final Path path = mRightTopCorner;
         path.reset();
-        path.moveTo(displayRect.left, displayRect.top);
-        path.lineTo(displayRect.right - mRadius, displayRect.top);
+        path.moveTo(displayRect.right - mRadius, displayRect.top);
         //右上圆角
         path.arcTo(mRightTopArc, 270, 90);
-        path.lineTo(displayRect.right, displayRect.bottom);
-        path.lineTo(displayRect.left + mAngleWidth, displayRect.bottom);
-        //左上三角
-        path.lineTo(displayRect.left + mAngleWidth, (float) (displayRect.top + Math.sqrt(mAngleWidth * mAngleWidth * 2)));
-        path.lineTo(displayRect.left, displayRect.top);
+        path.lineTo(displayRect.right, displayRect.top + mRadius);
+        path.lineTo(displayRect.right, displayRect.top);
         path.close();
-        canvas.clipPath(path);
+        if (DEBUG) {
+            Log.d(TAG, "onDraw: ========displayRect:" + displayRect + " path:" + mRightTopArc);
+        }
+        try {
+            canvas.clipPath(path, Region.Op.DIFFERENCE);
+        } catch (Exception e) {
+            if (DEBUG) {
+                Log.e(TAG, "onDraw: clipPath error :", e);
+            }
+        }
 
         super.onDraw(canvas);
 

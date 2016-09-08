@@ -10,4 +10,8 @@
     <color name="blue">#0000ff</color>
     <color name="green">#00ff00</color>
     <color name="pink">#ff00ff</color>
+
+    <color name="primary_color">#f43872</color>
+    <color name="primary_color_1">#ff3267</color>
+    <color name="primary_color_1_50">#80ff3267</color>
 </resources>
