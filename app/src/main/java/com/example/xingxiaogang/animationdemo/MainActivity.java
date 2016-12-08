@@ -1,6 +1,6 @@
 package com.example.xingxiaogang.animationdemo;
 
-import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private RadarView iconScanView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.start).setOnClickListener(this);
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.loading_window).setOnClickListener(this);
+        findViewById(R.id.list).setOnClickListener(this);
 
         ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable(SizeUtils.dp2px(this, 2));
         ((ImageView) findViewById(R.id.loading_icon)).setImageDrawable(colorDotLoadingDrawable);
@@ -56,6 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.loading_window: {
                 AlertDialog dialog = new AlertDialog.Builder(MainActivity.this).setView(R.layout.dialog_layout).create();
                 dialog.show();
+                break;
+            }
+            case R.id.list: {
+                startActivity(new Intent(this, ListActivity.class));
                 break;
             }
         }
