@@ -14,20 +14,19 @@ import android.os.Message;
  * Created by xingxiaogang on 2016/8/1.
  * 加载动画drawable 三个点 颜色交替变化
  */
-public class ColorDotLoadingDrawable extends Drawable implements Handler.Callback {
+public class ColorDotLoadingDrawable extends Drawable {
 
     private Paint mCirclePaint;
     private Rect mDrawRect;
     private int mMainDotColor;
     private int mHighLightDotColor;
     private int mHighLightPosition;
-    private Handler mHandler;
-    private boolean isStart = false;
-    private int mDuration;
     private int mDotRadius;
+    private final static int MSG_RESFRESH = 2;
+    private Handler mRefreshHandler;
 
-    public ColorDotLoadingDrawable() {
-        init(8, Color.GREEN, Color.YELLOW);
+    public ColorDotLoadingDrawable(int size) {
+        init(size, Color.GREEN, Color.BLUE);
     }
 
     public ColorDotLoadingDrawable(int dotRadus, int mainColor, int highLightColor) {
@@ -38,7 +37,7 @@ public class ColorDotLoadingDrawable extends Drawable implements Handler.Callbac
         this.mDotRadius = dotRadius;
         this.mMainDotColor = mainColor;
         this.mHighLightDotColor = highLightColor;
-        Paint paint = new Paint();
+        final Paint paint = new Paint();
         paint.setColor(mMainDotColor);
         paint.setStyle(Paint.Style.FILL);
         this.mCirclePaint = paint;
@@ -53,7 +52,7 @@ public class ColorDotLoadingDrawable extends Drawable implements Handler.Callbac
     @Override
     public void draw(Canvas canvas) {
         final Rect rect = mDrawRect;
-        final int radius = 8;
+        final int radius = mDotRadius;
         final int oneW = (rect.right - rect.left) / 3;
         final int currentPosition = mHighLightPosition;
         for (int i = 0; i < 3; i++) {
@@ -81,33 +80,40 @@ public class ColorDotLoadingDrawable extends Drawable implements Handler.Callbac
     }
 
     @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
-
-    @Override
-    public boolean handleMessage(Message msg) {
-        invalidateSelf();
-        if (isStart && mHandler != null) {
-            mHandler.sendEmptyMessageDelayed(0, mDuration);
+    public boolean setVisible(boolean visible, boolean restart) {
+        super.setVisible(visible, restart);
+        if (visible) {
+            start(400);
+        } else {
+            stop();
         }
         return true;
     }
 
-    public void start(int duration) {
-        if (mHandler == null) {
-            isStart = true;
-            mHandler = new Handler(this);
-            this.mDuration = duration;
-            mHandler.sendEmptyMessageDelayed(0, mDuration);
+    @Override
+    public int getOpacity() {
+        return PixelFormat.TRANSLUCENT;
+    }
+
+    public void start(final int duration) {
+        if (mRefreshHandler == null) {
+            mRefreshHandler = new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(Message msg) {
+                    if (msg.what == MSG_RESFRESH) {
+                        invalidateSelf();
+                        mRefreshHandler.sendEmptyMessageDelayed(MSG_RESFRESH, duration);
+                    }
+                    return true;
+                }
+            });
+            mRefreshHandler.sendEmptyMessage(MSG_RESFRESH);
         }
     }
 
     public void stop() {
-        isStart = false;
-        if (mHandler != null) {
-            mHandler.removeMessages(0);
-            mHandler = null;
+        if (mRefreshHandler != null) {
+            mRefreshHandler.removeMessages(MSG_RESFRESH);
         }
     }
 }

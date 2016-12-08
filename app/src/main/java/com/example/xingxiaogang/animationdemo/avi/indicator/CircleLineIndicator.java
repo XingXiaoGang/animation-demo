@@ -40,7 +40,7 @@ public class CircleLineIndicator extends BaseIndicatorController {
         super.setTarget(target);
         if (target != null) {
             mDensity = target.getResources().getDisplayMetrics().density;
-            mArcWidth = (int) (mDensity * 4);
+            mArcWidth = (int) (mDensity * 2);
             mCircleSpacing = (int) (mDensity * 8);
         }
     }

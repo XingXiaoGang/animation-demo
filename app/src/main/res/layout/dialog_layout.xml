@@ -6,13 +6,13 @@
     android:background="@color/radar_color_light"
     android:orientation="vertical">
 
-    <com.example.xingxiaogang.animationdemo.view.BubbleImageView
+    <com.example.xingxiaogang.animationdemo.view.RightCornerImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:angleWidth="8dp"
         app:baseWith="width"
         app:imageScale="0.8"
-        app:radius="5dp"
+        app:radius="20dp"
         app:src="@drawable/default_wallpaper" />
 
     <!--<ImageView-->
