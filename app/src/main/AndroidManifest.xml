@@ -18,6 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListActivity" />
+        <activity android:name=".CurtainActivity" />
+        <activity android:name=".CornerImageActivity" />
+        <activity android:name=".FocusActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\android\\svn\\Msgcenter\\branches\\MsgCenter_2.5_dev\\lib-guide\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\guide_fade_in.xml",
+        "source": "C:\\android\\svn\\Msgcenter\\branches\\MsgCenter_2.5_dev\\lib-guide\\build\\intermediates\\bundles\\debug\\res\\anim\\guide_fade_in.xml"
+    },
+    {
+        "merged": "C:\\android\\svn\\Msgcenter\\branches\\MsgCenter_2.5_dev\\lib-guide\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\guide_fade_out.xml",
+        "source": "C:\\android\\svn\\Msgcenter\\branches\\MsgCenter_2.5_dev\\lib-guide\\build\\intermediates\\bundles\\debug\\res\\anim\\guide_fade_out.xml"
+    }
+]

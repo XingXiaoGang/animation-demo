@@ -15,4 +15,6 @@
     <color name="primary_color">#f43872</color>
     <color name="primary_color_1">#ff3267</color>
     <color name="primary_color_1_50">#80ff3267</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

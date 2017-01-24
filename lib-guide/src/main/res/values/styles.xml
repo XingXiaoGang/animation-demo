@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="guide_anim_style">
+        <item name="android:windowEnterAnimation">@anim/guide_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/guide_fade_out</item>
+    </style>
+
+</resources>
