@@ -9,8 +9,9 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
-import android.widget.Scroller;
+import android.widget.OverScroller;
 
 /**
  * Created by xingxiaogang on 2017/1/24.
@@ -23,7 +24,7 @@ public class FocusView extends FrameLayout {
 
     private Rect mVisibleRect = new Rect();
     private Paint mFocusPaint = new Paint();
-    private Scroller mScroller;
+    private OverScroller mScroller;
     private int mCoverColor = Color.GRAY;
     private PorterDuffXfermode porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
 
@@ -44,18 +45,20 @@ public class FocusView extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
+        if (attrs != null) {
+            //todo 取颜色
+        }
         mFocusPaint.setColor(Color.parseColor("#44444444"));
         mCoverColor = Color.parseColor("#22000000");
         mFocusPaint.setStyle(Paint.Style.FILL);
         mFocusPaint.setStrokeWidth(20);
-        mScroller = new Scroller(context, new DecelerateInterpolator());
+        mScroller = new OverScroller(context, new OvershootInterpolator(1f));
         setWillNotDraw(false);
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
         if (getMeasuredHeight() > 0) {
             getGlobalVisibleRect(mVisibleRect);
             postDelayed(new Runnable() {

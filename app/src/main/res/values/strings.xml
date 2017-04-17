@@ -7,4 +7,8 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <string name="guide_title">引导标题</string>
+    <string name="guide_content">引导内容</string>
+    <string name="guide_action_content">引导按钮</string>
+
 </resources>

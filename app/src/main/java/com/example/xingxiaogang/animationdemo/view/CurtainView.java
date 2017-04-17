@@ -49,7 +49,7 @@ public class CurtainView extends FrameLayout implements ValueAnimator.AnimatorUp
         mPaint = new Paint();
         mPaint.setColor(Color.GRAY);
         mPaint.setStyle(Paint.Style.FILL);
-        setWillNotDraw(true);
+        setWillNotDraw(false);
     }
 
     @Override
@@ -64,6 +64,7 @@ public class CurtainView extends FrameLayout implements ValueAnimator.AnimatorUp
         mAnimator.setDuration(500);
         mAnimator.addUpdateListener(this);
         mAnimator.start();
+        Log.d(TAG, "startOpenAnim: ");
     }
 
     public void cancleAnim() {
@@ -75,14 +76,14 @@ public class CurtainView extends FrameLayout implements ValueAnimator.AnimatorUp
 
     @Override
     public void onAnimationUpdate(ValueAnimator animation) {
-//        mCurrentValue = (int) mAnimator.getAnimatedValue();
+        mCurrentValue = (int) mAnimator.getAnimatedValue();
+        Log.d(TAG, "onAnimationUpdate: " + mCurrentValue);
         invalidate();
     }
 
     @Override
-    public void draw(Canvas canvas) {
-//        super.draw(canvas);
-
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         Log.d(TAG, "onDraw: ");
         canvas.drawColor(Color.WHITE);
         if (isAnimating) {
@@ -92,15 +93,14 @@ public class CurtainView extends FrameLayout implements ValueAnimator.AnimatorUp
             final int width = mVisibleRect.width();
             float persent = mCurrentValue * 1.0f / mMaxValue;
             path.moveTo(0, 0);
-            path.lineTo( width / 2, 0);
-//            path.quadTo(0, 0, width / 2, 0);
-//            path.quadTo(width, 0, 0, height);
+            path.lineTo(width / 2, 0);
+            path.quadTo(0, 0, width / 2, 0);
+            path.quadTo(width, 0, 0, height);
             path.lineTo(width, height);
             path.lineTo(0, 0);
             path.close();
             canvas.drawPath(path, mPaint);
-//            canvas.clipPath(path);
+            canvas.clipPath(path);
         }
-//        super.onDraw(canvas);
     }
 }
