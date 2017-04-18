@@ -44,7 +44,7 @@ public class BeginnerGuideView extends FrameLayout {
     private TextView mGotItBtn;
     private AnimatorSet mAnimator;
 
-    private static int layoutId = R.layout.beginners_guide_view;
+    private static int layoutId = R.layout.beginners_guide_small_view;
     private static float widthPercent = 1.0f;   // View所占整个屏幕的比重
     private OnGotItClickListener listener;      // Got it 点击事件接口
     private boolean onGuiding = false;   // 引导情景的标志位
@@ -121,7 +121,7 @@ public class BeginnerGuideView extends FrameLayout {
     }
 
     public static BeginnerGuideView fromStub(ViewStub stub) {
-        layoutId = R.layout.beginners_guide_view;
+        layoutId = R.layout.beginners_guide_small_view;
         widthPercent = 1.0f;
         return ((BeginnerGuideView) stub.inflate());
     }
@@ -147,7 +147,7 @@ public class BeginnerGuideView extends FrameLayout {
 
     public BeginnerGuideView setTitle(int res) {
         mTitle.setText(res);
-        if (layoutId == R.layout.beginners_guide_small_view && mTitle.getText().toString().trim().equals("")) {
+        if (mTitle.getText().toString().trim().equals("")) {
             mTitle.setVisibility(GONE);
         }
         return this;

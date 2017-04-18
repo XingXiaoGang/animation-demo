@@ -1,17 +1,17 @@
 package com.example.xingxiaogang.animationdemo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.xingxiaogang.animationdemo.view.ColorDotLoadingDrawable;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener {
 
     private RadarView iconScanView;
 

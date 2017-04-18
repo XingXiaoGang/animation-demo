@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
-import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -109,42 +108,6 @@ public class AVLoadingIndicatorView extends View {
     public static final int BallGridBeat = 26;
     public static final int SemiCircleSpin = 27;
     public static final int CircleLine = 28;
-
-
-    @IntDef(flag = true,
-            value = {
-                    BallPulse,
-                    BallGridPulse,
-                    BallClipRotate,
-                    BallClipRotatePulse,
-                    SquareSpin,
-                    BallClipRotateMultiple,
-                    BallPulseRise,
-                    BallRotate,
-                    CubeTransition,
-                    BallZigZag,
-                    BallZigZagDeflect,
-                    BallTrianglePath,
-                    BallScale,
-                    LineScale,
-                    LineScaleParty,
-                    BallScaleMultiple,
-                    BallPulseSync,
-                    BallBeat,
-                    LineScalePulseOut,
-                    LineScalePulseOutRapid,
-                    BallScaleRipple,
-                    BallScaleRippleMultiple,
-                    BallSpinFadeLoader,
-                    LineSpinFadeLoader,
-                    TriangleSkewSpin,
-                    Pacman,
-                    BallGridBeat,
-                    SemiCircleSpin,
-                    CircleLine
-            })
-    public @interface Indicator {
-    }
 
     //Sizes (with defaults in DP)
     public static final int DEFAULT_SIZE = 45;
