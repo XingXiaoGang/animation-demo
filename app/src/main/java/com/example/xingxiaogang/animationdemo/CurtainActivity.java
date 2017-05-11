@@ -1,10 +1,12 @@
 package com.example.xingxiaogang.animationdemo;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
 
-import com.example.xingxiaogang.animationdemo.view.CurtainView;
+import com.example.xingxiaogang.animationdemo.drawable.CurtainDrawable;
 
 /**
  * Created by xingxiaogang on 2017/1/24.
@@ -17,6 +19,12 @@ public class CurtainActivity extends Activity {
         super.onCreate(savedInstanceState, persistentState);
         setContentView(R.layout.activity_curtain);
 
-        ((CurtainView) findViewById(R.id.curtain_view)).startOpenAnim();
+        View target = findViewById(R.id.curtain_view);
+        CurtainDrawable drawable = new CurtainDrawable();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            target.setBackground(drawable);
+        } else {
+            target.setBackgroundDrawable(drawable);
+        }
     }
 }
