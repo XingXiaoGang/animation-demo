@@ -25,6 +25,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.stop).setOnClickListener(this);
         findViewById(R.id.cornerImage_window).setOnClickListener(this);
         findViewById(R.id.list).setOnClickListener(this);
+        findViewById(R.id.sensor).setOnClickListener(this);
         findViewById(R.id.focus_open).setOnClickListener(this);
 
         ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable(SizeUtils.dp2px(this, 2));
@@ -58,6 +59,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             case R.id.focus_open: {
                 startActivity(new Intent(this, FocusActivity.class));
+                break;
+            }
+            case R.id.sensor: {
+                startActivity(new Intent(this, SensorActivity.class));
                 break;
             }
         }

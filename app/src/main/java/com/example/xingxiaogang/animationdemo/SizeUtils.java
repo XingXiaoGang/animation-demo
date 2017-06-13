@@ -16,7 +16,7 @@ public class SizeUtils {
         return (int) (density * dp + 0.5F);
     }
 
-    public static int dp2px(int dp) {
+    public static int dp2px(float dp) {
         final float density = Resources.getSystem().getDisplayMetrics().density;
 
         return (int) (density * dp + 0.5F);

@@ -161,6 +161,12 @@
                 android:layout_height="50dp"
                 android:text="聚焦" />
 
+            <Button
+                android:id="@+id/sensor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="重力" />
+
         </LinearLayout>
 
     </ScrollView>
