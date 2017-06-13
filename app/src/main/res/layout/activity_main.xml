@@ -95,35 +95,32 @@
 
             </RelativeLayout>
 
-            <!--<com.example.xingxiaogang.animationdemo.view.ReduceRadarView-->
-            <!--android:id="@+id/icon_big"-->
-            <!--android:layout_width="200dp"-->
-            <!--android:layout_height="200dp"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginBottom="10dp"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:src="@drawable/radar_bg" />-->
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--<com.example.xingxiaogang.animationdemo.avi.AVLoadingIndicatorView-->
-                <!--android:id="@+id/float_content_window_loading_view"-->
-                <!--android:layout_width="110dp"-->
-                <!--android:layout_height="110dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_marginBottom="20dp"-->
-                <!--android:layout_marginTop="20dp"-->
-                <!--app:indicator="CircleLine"-->
-                <!--app:indicator_color="@color/primary_color" />-->
-
-                <ImageView
-                    android:id="@+id/vector_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <com.example.xingxiaogang.animationdemo.avi.AVLoadingIndicatorView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/float_content_window_loading_view"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/animated_vector_round" />
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    app:indicator="CircleLine"
+                    app:indicator_color="@color/primary_color" />
+
+                <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/progress_view"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:padding="0dp"
+                    app:cpv_animAutostart="true"
+                    app:cpv_color="#831848c2"
+                    app:cpv_indeterminate="true"
+                    app:cpv_thickness="5dp" />
 
             </FrameLayout>
 
@@ -157,12 +154,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="列表" />
-
-            <Button
-                android:id="@+id/curtain_open"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="开幕" />
 
             <Button
                 android:id="@+id/focus_open"
