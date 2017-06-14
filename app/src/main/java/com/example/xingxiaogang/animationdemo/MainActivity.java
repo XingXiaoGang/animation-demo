@@ -2,12 +2,15 @@ package com.example.xingxiaogang.animationdemo;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.example.xingxiaogang.animationdemo.view.ColorDotLoadingDrawable;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
+import com.plattysoft.leonids.ParticleSystem;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -30,6 +33,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable(SizeUtils.dp2px(this, 2));
         ((ImageView) findViewById(R.id.loading_icon)).setImageDrawable(colorDotLoadingDrawable);
+
+        iconScanView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                //抛物线
+                ParticleSystem ps2 = new ParticleSystem(MainActivity.this, 100, R.mipmap.star_pink, 4000);
+                ps2.setScaleRange(0.5f, 1.0f);
+                ps2.setSpeedModuleAndAngleRange(0.02f, 0.08f, 265, 360);
+                ps2.setRotationSpeedRange(90, 360);
+                ps2.setAcceleration(0.0001f, 80);
+                ps2.setFadeOut(800);
+                ps2.emit(iconScanView, 10);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    iconScanView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    iconScanView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override

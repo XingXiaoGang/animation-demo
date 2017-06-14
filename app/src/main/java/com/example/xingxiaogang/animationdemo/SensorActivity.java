@@ -113,8 +113,8 @@ public class SensorActivity extends Activity implements SensorListener {
                 int x = (int) sensorValues[2];
                 int y = (int) sensorValues[1];
                 //是否相反
-                final boolean REVERT = Build.VERSION.SDK_INT > 22;
-                int degress = (int) calcDegrees(x, y, false);
+                final boolean REVERT = Build.VERSION.SDK_INT <= 22;
+                int degress = (int) accelerometer2Degrees(x, y, REVERT);
 
                 y = 90 - y;//(0-180,上到下)
                 if (REVERT) {
@@ -146,29 +146,35 @@ public class SensorActivity extends Activity implements SensorListener {
             }
         }
 
-        public float calcDegrees(int x, int y, boolean reversX) {
+        //装重力转换为[0-360)弧度
+        public float accelerometer2Degrees(int x, int y, boolean reversX) {
             int degree = 0;
             int base = 0;
-            if (x > 0) {
-                if (reversX) {
+            if (reversX) {
+                if (x > 0) {
+                    if (y > 0) {
+                        base = 180;
+                    }
+                } else if (x == 0) {
+                    degree = y > 0 ? 270 : y == 0 ? -1 : 90;
+                } else {
                     base = 180;
-                } else if (y > 0) {
-                    x = -x;
-                    base = 360;
+                }
+            } else {
+                if (x > 0) {
+                    if (y > 0) {
+                        x = -x;
+                        base = 360;
+                    } else {
+                        x = -x;
+                    }
+                } else if (x == 0) {
+                    degree = y > 0 ? 270 : y == 0 ? -1 : 90;
                 } else {
                     x = -x;
-                }
-            } else if (x == 0) {
-                degree = y > 0 ? 270 : y == 0 ? -1 : 90;
-            } else {
-                if (!reversX) {
-                    x = -x;
                     base = 180;
-                } else if (y > 0) {
-                    base = 270 + 90;
                 }
             }
-
             return degree == 270 || degree == 90 ? degree : (int) Math.toDegrees(Math.atan(y * 1.0f / x)) + base;
         }
 
