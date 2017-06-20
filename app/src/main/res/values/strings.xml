@@ -10,5 +10,8 @@
     <string name="guide_title">引导标题</string>
     <string name="guide_content">引导内容</string>
     <string name="guide_action_content">引导按钮</string>
-
+    <string name="notification_license_link">《最终用户许可及隐私保护协议》</string>
+    <!--Like this:"Tapping "Start" means you agreed "End User License Agreement and Privacy Policy"" -->
+    <string name="notification_license_desc">点击\"%1$s\"，即代表您同意%2$s.</string>
+    <string name="start_text">开始</string>
 </resources>

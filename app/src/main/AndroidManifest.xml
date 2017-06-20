@@ -23,6 +23,7 @@
         <activity android:name=".CornerImageActivity" />
         <activity android:name=".FocusActivity" />
         <activity android:name=".SensorActivity" />
+        <activity android:name=".WelcomeActivity" />
     </application>
 
 </manifest>

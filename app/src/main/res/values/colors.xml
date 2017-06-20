@@ -6,15 +6,22 @@
     <color name="radar_color_light">#ddeeffee</color>
     <color name="radar_color_bg">#4C000000</color>
     <color name="text_444">#ff444444</color>
+    <color name="white">#ffffff</color>
+    <color name="text_alpha_60">#a0444444</color>
 
     <color name="red">#ff0000</color>
     <color name="blue">#0000ff</color>
     <color name="green">#00ff00</color>
     <color name="pink">#ff00ff</color>
-
+    <color name="color_23a0ff">#ff23a0ff</color>
+    <color name="color_23a0ff_alpha80">#cc23a0ff</color>
+    <color name="black">#000000</color>
     <color name="primary_color">#f43872</color>
     <color name="primary_color_1">#ff3267</color>
     <color name="primary_color_1_50">#80ff3267</color>
-
+    <color name="text_444444">#444444</color>
+    <color name="text_444444_alpha50">#88444444</color>
+    <color name="text_444444_alpha10">#0f444444</color>
+    <color name="text_444444_alpha70">#b8444444</color>
     <color name="black_overlay">#66000000</color>
 </resources>

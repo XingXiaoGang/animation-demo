@@ -30,6 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.list).setOnClickListener(this);
         findViewById(R.id.sensor).setOnClickListener(this);
         findViewById(R.id.focus_open).setOnClickListener(this);
+        findViewById(R.id.welcome).setOnClickListener(this);
 
         ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable(SizeUtils.dp2px(this, 2));
         ((ImageView) findViewById(R.id.loading_icon)).setImageDrawable(colorDotLoadingDrawable);
@@ -91,6 +92,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             case R.id.sensor: {
                 startActivity(new Intent(this, SensorActivity.class));
+                break;
+            }
+            case R.id.welcome: {
+                startActivity(new Intent(this, WelcomeActivity.class));
                 break;
             }
         }

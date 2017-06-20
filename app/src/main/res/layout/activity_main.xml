@@ -179,6 +179,12 @@
                 android:layout_height="50dp"
                 android:text="重力" />
 
+            <Button
+                android:id="@+id/welcome"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="首页" />
+
         </LinearLayout>
 
     </ScrollView>

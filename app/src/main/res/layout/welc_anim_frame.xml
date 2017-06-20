@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+
+    <com.example.xingxiaogang.animationdemo.view.PercentLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/icon_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/badge_twitter"
+            app:percentInX="0.18"
+            app:percentInY="0.1" />
+
+        <ImageView
+            android:id="@+id/icon_2"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@mipmap/badge_facebook"
+            app:percentInX="0.3"
+            app:percentInY="0.45" />
+
+        <ImageView
+            android:id="@+id/icon_3"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@mipmap/badge_wechat"
+            app:percentInX="0.5"
+            app:percentInY="0.25" />
+
+        <ImageView
+            android:id="@+id/icon_4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/badge_gmail"
+            android:rotation="45"
+            app:percentInX="0.7"
+            app:percentInY="0.15" />
+
+        <ImageView
+            android:id="@+id/icon_5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@mipmap/badge_whatsapp"
+            app:percentInX="0.8"
+            app:percentInY="0.6" />
+
+        <ImageView
+            android:id="@+id/target"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@mipmap/main_img"
+            app:percentInX="0.5"
+            app:percentInY="1" />
+
+    </com.example.xingxiaogang.animationdemo.view.PercentLayout>
+</merge>
