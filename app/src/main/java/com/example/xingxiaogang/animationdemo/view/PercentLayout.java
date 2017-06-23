@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.example.xingxiaogang.animationdemo.R;
 
@@ -45,29 +44,8 @@ public class PercentLayout extends ViewGroup {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        measureChildren(widthMeasureSpec, heightMeasureSpec);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int count = getChildCount();
-        for (int i = 0; i < count; i++) {
-            View child = getChildAt(i);
-            LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            final int childWidthMeasureSpec;
-            if (lp.width == FrameLayout.LayoutParams.MATCH_PARENT) {
-                final int width = Math.max(0, getMeasuredWidth());
-                childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
-            } else {
-                childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec, 0, lp.width);
-            }
-
-            final int childHeightMeasureSpec;
-            if (lp.height == FrameLayout.LayoutParams.MATCH_PARENT) {
-                final int height = Math.max(0, getMeasuredHeight());
-                childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        height, MeasureSpec.EXACTLY);
-            } else {
-                childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, 0, lp.height);
-            }
-            child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
-        }
     }
 
     @Override

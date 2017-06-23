@@ -12,10 +12,12 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.animation.OvershootInterpolator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,7 +61,9 @@ public class WelcomeActivity extends Activity {
         final int startTime = 400;
         for (int i = 0; i < mAnims.size(); i++) {
             TogetherAnim anim = mAnims.get(i);
-            anim.start(buket.getX(), buket.getY(), startTime + i * TogetherAnim.DURATION);
+            int finalX = (int) (buket.getX() + buket.getWidth() / 2 - mViewObjects.get(i).getWidth() / 2);
+            int finalY = (int) (buket.getY() + buket.getHeight() / 2 - mViewObjects.get(i).getHeight() / 2);
+            anim.start(finalX, finalY, startTime + i * TogetherAnim.DURATION);
             final int finalI = i;
             mBuket.post(new Runnable() {
                 @Override
@@ -67,7 +71,7 @@ public class WelcomeActivity extends Activity {
                     PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 0.8f, 1.2f, 1f);
                     PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f, 0.8f, 1.2f, 1f);
                     ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mBuket, pvhY, pvhZ).setDuration(400);
-                    objectAnimator.setStartDelay(finalI * TogetherAnim.DURATION + startTime - 10);
+                    objectAnimator.setStartDelay((finalI + 1) * TogetherAnim.DURATION + startTime - 200);
                     objectAnimator.start();
                 }
             });
@@ -158,7 +162,6 @@ public class WelcomeActivity extends Activity {
     private void initAnimations() {
         final List<View> viewObjects = mViewObjects;
         for (View view : viewObjects) {
-            view.setAlpha(0);
             mAnims.add(new TogetherAnim(view));
         }
     }
@@ -175,7 +178,6 @@ public class WelcomeActivity extends Activity {
         private int mCurrentY;
 
         private float mApha;
-        private static final float mVelocity = 0.2f;//加速度
         private static float mTotalTime;
 
         public static final long DURATION = 500;
@@ -184,12 +186,11 @@ public class WelcomeActivity extends Activity {
             this.targetView = targetView;
             setFloatValues(0, 1f);
             setDuration(DURATION);
-            setInterpolator(new OvershootInterpolator(1));
+            setInterpolator(new AccelerateDecelerateInterpolator());
             addUpdateListener(this);
         }
 
         public void start(float finalX, float finalY, long delay) {
-            super.start();
             setStartDelay(delay);
             this.finalX = (int) finalX;
             this.finalY = (int) finalY;
@@ -197,9 +198,13 @@ public class WelcomeActivity extends Activity {
             startY = (int) targetView.getY();
             mCurrentX = startX;
             mCurrentY = startY;
+            super.start();
         }
 
         private void logic(float value, long time) {
+            if (DEBUG) {
+                Log.d(TAG, "logic: " + value);
+            }
             final int XDis = finalX - startX;
             final int YDis = finalY - startY;
 
@@ -207,13 +212,8 @@ public class WelcomeActivity extends Activity {
                 mTotalTime = (float) (2 * Math.sqrt(YDis));
             }
 
-            mCurrentX = (int) (value * (XDis + targetView.getWidth() / 3));
-
-            //转换系数
-            float t = time / 1000f * mTotalTime;
-//            mCurrentY = (int) (mVelocity * (t * t));
-            mCurrentY = (int) (value * (YDis + targetView.getHeight() / 3));
-            mApha = 1f - value;
+            mCurrentX = (int) (value * (XDis));
+            mCurrentY = (int) (value * (YDis));
         }
 
         @Override
@@ -221,7 +221,24 @@ public class WelcomeActivity extends Activity {
             logic(Float.parseFloat(getAnimatedValue().toString()), animation.getCurrentPlayTime());
             targetView.setTranslationX(mCurrentX);
             targetView.setTranslationY(mCurrentY);
-            targetView.setAlpha(mApha);
+//            targetView.setAlpha(mApha);
         }
+
+        static class OverShootInterplator implements Interpolator {
+
+            public OverShootInterplator() {
+
+            }
+
+            @Override
+            public float getInterpolation(float input) {
+                if (DEBUG) {
+                    Log.d(TAG, "getInterpolation: " + input);
+                }
+                return input;
+            }
+        }
+
+
     }
 }

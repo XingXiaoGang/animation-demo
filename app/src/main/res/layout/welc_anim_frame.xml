@@ -50,9 +50,9 @@
 
         <ImageView
             android:id="@+id/target"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@mipmap/main_img"
+            android:layout_width="175dp"
+            android:layout_height="80dp"
+            android:background="@mipmap/app_box_icon"
             app:percentInX="0.5"
             app:percentInY="1" />
 
