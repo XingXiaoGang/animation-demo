@@ -54,6 +54,7 @@
             android:layout_height="80dp"
             android:background="@mipmap/app_box_icon"
             app:percentInX="0.5"
+            android:visibility="invisible"
             app:percentInY="1" />
 
     </com.example.xingxiaogang.animationdemo.view.PercentLayout>

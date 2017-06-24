@@ -5,6 +5,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
@@ -16,8 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -122,10 +122,10 @@ public class WelcomeActivity extends Activity {
 
     private void initView() {
         mViewObjects.add(findViewById(R.id.icon_1));
-        mViewObjects.add(findViewById(R.id.icon_2));
-        mViewObjects.add(findViewById(R.id.icon_3));
-        mViewObjects.add(findViewById(R.id.icon_4));
-        mViewObjects.add(findViewById(R.id.icon_5));
+//        mViewObjects.add(findViewById(R.id.icon_2));
+//        mViewObjects.add(findViewById(R.id.icon_3));
+//        mViewObjects.add(findViewById(R.id.icon_4));
+//        mViewObjects.add(findViewById(R.id.icon_5));
         mBuket = findViewById(R.id.target);
         mLogoImage = findViewById(R.id.img_logo);
         mNameText = findViewById(R.id.txt_name);
@@ -178,15 +178,19 @@ public class WelcomeActivity extends Activity {
         private int mCurrentY;
 
         private float mApha;
-        private static float mTotalTime;
 
         public static final long DURATION = 500;
+
+        int radius = 0;
+        float angle = 0;
+        int centerX = 0;
+        int centerY = 0;
 
         public TogetherAnim(View targetView) {
             this.targetView = targetView;
             setFloatValues(0, 1f);
             setDuration(DURATION);
-            setInterpolator(new AccelerateDecelerateInterpolator());
+            setInterpolator(new OvershootInterpolator(2.0f));
             addUpdateListener(this);
         }
 
@@ -198,23 +202,28 @@ public class WelcomeActivity extends Activity {
             startY = (int) targetView.getY();
             mCurrentX = startX;
             mCurrentY = startY;
+
+            //半径
+            int distance = (int) Math.sqrt(Math.pow(finalX - startX, 2) + Math.pow(finalY - startY, 2));
+            radius = (int) (distance / 1.5f);
+            angle = (float) Math.toDegrees(Math.acos(1 - (Math.pow(distance, 2) / (2 * Math.pow(radius, 2)))));
+            //todo 圆心
+
+            if (DEBUG) {
+                Log.d(TAG, "start: dis" + distance + " 半径=" + radius + " angle=" + angle);
+                Log.d(TAG, "start: 检测：" + (int) Math.sqrt(Math.pow(startX - centerX, 2) + Math.pow(startX - centerY, 2)));
+            }
             super.start();
         }
 
         private void logic(float value, long time) {
-            if (DEBUG) {
-                Log.d(TAG, "logic: " + value);
-            }
-            final int XDis = finalX - startX;
-            final int YDis = finalY - startY;
 
-            if (mTotalTime == 0) {
-                mTotalTime = (float) (2 * Math.sqrt(YDis));
-            }
+            float currentAngle = value * angle;
 
-            mCurrentX = (int) (value * (XDis));
-            mCurrentY = (int) (value * (YDis));
+            mCurrentX = (int) (centerX + radius * Math.cos(currentAngle * Math.PI / 180));
+            mCurrentY = (int) (centerY + radius * Math.sin(currentAngle * Math.PI / 180));
         }
+
 
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
@@ -223,22 +232,5 @@ public class WelcomeActivity extends Activity {
             targetView.setTranslationY(mCurrentY);
 //            targetView.setAlpha(mApha);
         }
-
-        static class OverShootInterplator implements Interpolator {
-
-            public OverShootInterplator() {
-
-            }
-
-            @Override
-            public float getInterpolation(float input) {
-                if (DEBUG) {
-                    Log.d(TAG, "getInterpolation: " + input);
-                }
-                return input;
-            }
-        }
-
-
     }
 }
