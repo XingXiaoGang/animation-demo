@@ -46,16 +46,17 @@
             android:layout_height="40dp"
             android:background="@mipmap/badge_whatsapp"
             app:percentInX="0.8"
-            app:percentInY="0.6" />
+            app:percentInY="0.4" />
 
         <ImageView
             android:id="@+id/target"
             android:layout_width="175dp"
             android:layout_height="80dp"
             android:background="@mipmap/app_box_icon"
+            android:scaleX="0"
+            android:scaleY="0"
             app:percentInX="0.5"
-            android:visibility="invisible"
-            app:percentInY="1" />
+            app:percentInY="0.8" />
 
     </com.example.xingxiaogang.animationdemo.view.PercentLayout>
 </merge>

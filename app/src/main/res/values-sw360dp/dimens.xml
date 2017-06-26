@@ -1,4 +1,4 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="license_logo_margin">100dp</dimen>
+    <dimen name="license_logo_margin">-150dp</dimen>
 </resources>

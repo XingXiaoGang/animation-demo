@@ -11,39 +11,41 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/img_logo"
                 android:layout_width="88dp"
                 android:layout_height="88dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/license_logo_margin"
-                android:background="@mipmap/main_img" />
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:background="@mipmap/main_img"
+                android:scaleX="0"
+                android:scaleY="0"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/txt_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:alpha="0"
                 android:gravity="center"
                 android:text="APUS MESSAGE CENTER"
                 android:textColor="@color/text_444444"
                 android:textSize="20sp" />
 
-
-        </LinearLayout>
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/anim_panel"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_gravity="bottom">
+            android:layout_height="300dp"
+            android:layout_gravity="center">
 
             <include layout="@layout/welc_anim_frame" />
 

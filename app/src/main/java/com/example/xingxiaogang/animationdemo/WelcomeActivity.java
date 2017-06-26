@@ -1,11 +1,12 @@
 package com.example.xingxiaogang.animationdemo;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
@@ -13,15 +14,18 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by xingxiaogang on 2017/6/19.
@@ -31,11 +35,11 @@ public class WelcomeActivity extends Activity {
     private static final boolean DEBUG = true;
     private static final String TAG = "WelcomeActivity";
     private List<View> mViewObjects = new ArrayList<>();
-    private List<TogetherAnim> mAnims = new ArrayList<>();
     private View mBuket = null;
 
     private View mLogoImage = null;
     private View mNameText = null;
+    private static final int ICON_VIEW_ANIM_DURATION = 400;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +48,6 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.notification_license_activity);
 
         initView();
-        initAnimations();
 
         mBuket.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -56,76 +59,100 @@ public class WelcomeActivity extends Activity {
     }
 
     private void startAnimate() {
+
+        final int startTime = 400;
+        //盒子放大
+        PropertyValuesHolder buketX = PropertyValuesHolder.ofFloat("scaleX", 0f, 1f);
+        PropertyValuesHolder buketY = PropertyValuesHolder.ofFloat("scaleY", 0f, 1f);
+        ObjectAnimator bukketAnim = ObjectAnimator.ofPropertyValuesHolder(mBuket, buketX, buketY).setDuration(600);
+        bukketAnim.setInterpolator(new OvershootInterpolator(3));
+        bukketAnim.setStartDelay(startTime);
+        bukketAnim.start();
+
         //聚合动画
         final View buket = mBuket;
-        final int startTime = 400;
-        for (int i = 0; i < mAnims.size(); i++) {
-            TogetherAnim anim = mAnims.get(i);
-            int finalX = (int) (buket.getX() + buket.getWidth() / 2 - mViewObjects.get(i).getWidth() / 2);
-            int finalY = (int) (buket.getY() + buket.getHeight() / 2 - mViewObjects.get(i).getHeight() / 2);
-            anim.start(finalX, finalY, startTime + i * TogetherAnim.DURATION);
+        Random random = new Random();
+        for (int i = 0; i < mViewObjects.size(); i++) {
+            final View view = mViewObjects.get(i);
+            int finalX = (int) (buket.getX() + buket.getWidth() / 2 - view.getWidth() / 2);
+            int finalY = (int) (buket.getY());
+
+            //位移
+            finalX = (int) (finalX + (random.nextFloat() * view.getWidth() / 2) * (i % 2 == 0 ? -1 : 1));
+
+            int startX = (int) mViewObjects.get(i).getX();
+            int startY = (int) mViewObjects.get(i).getY();
+
+            ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(view, "translationY", 0f, (float) (finalY - startY));
+            objectAnimatorX.setInterpolator(new AccelerateInterpolator());
+            objectAnimatorX.setDuration(ICON_VIEW_ANIM_DURATION);
+            ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(view, "translationX", 0f, (float) (finalX - startX));
+            objectAnimatorY.setInterpolator(new LinearInterpolator());
+            objectAnimatorY.setDuration(ICON_VIEW_ANIM_DURATION);
+            AnimatorSet set = new AnimatorSet();
+            set.playTogether(objectAnimatorX, objectAnimatorY);
+            set.setStartDelay(i * (ICON_VIEW_ANIM_DURATION - 100) + startTime + 500 - 200);
             final int finalI = i;
-            mBuket.post(new Runnable() {
+            set.addListener(new AnimatorListenerAdapter() {
                 @Override
-                public void run() {
-                    PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 0.8f, 1.2f, 1f);
-                    PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f, 0.8f, 1.2f, 1f);
-                    ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mBuket, pvhY, pvhZ).setDuration(400);
-                    objectAnimator.setStartDelay((finalI + 1) * TogetherAnim.DURATION + startTime - 200);
-                    objectAnimator.start();
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    view.animate().translationYBy(-view.getHeight() / 2).setDuration(ICON_VIEW_ANIM_DURATION / 2).setInterpolator(new DecelerateInterpolator()).start();
+
+                    //缩小动画
+                    if (finalI == mViewObjects.size() - 1) {
+                        PropertyValuesHolder buketX = PropertyValuesHolder.ofFloat("scaleX", 1f, 1.2f, 0f);
+                        PropertyValuesHolder buketY = PropertyValuesHolder.ofFloat("scaleY", 1f, 1.2f, 0f);
+                        ObjectAnimator bukketAnim = ObjectAnimator.ofPropertyValuesHolder(mBuket, buketX, buketY).setDuration(800);
+                        bukketAnim.setInterpolator(new LinearInterpolator());
+                        bukketAnim.setStartDelay(startTime);
+                        bukketAnim.addListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                //Logo放大动画
+                                PropertyValuesHolder buketX = PropertyValuesHolder.ofFloat("scaleX", 0f, 1f, 1.1f, 1);
+                                PropertyValuesHolder buketY = PropertyValuesHolder.ofFloat("scaleY", 0f, 1f, 1.1f, 1);
+                                ObjectAnimator bukketAnim = ObjectAnimator.ofPropertyValuesHolder(mLogoImage, buketX, buketY).setDuration(800);
+                                bukketAnim.setInterpolator(new DecelerateInterpolator());
+                                bukketAnim.start();
+
+                                //Logo上升动画
+                                PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("translationY", 1f, SizeUtils.dp2px(120) - mLogoImage.getTop());
+                                ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mLogoImage, pvhX).setDuration(900);
+                                objectAnimator.setStartDelay(1000);
+                                objectAnimator.setInterpolator(new DecelerateInterpolator());
+                                objectAnimator.start();
+
+                                //显示App Name
+                                PropertyValuesHolder titleAnimAlpa = PropertyValuesHolder.ofFloat("alpha", 0, 1f);
+                                ObjectAnimator titleAnimator = ObjectAnimator.ofPropertyValuesHolder(mNameText, titleAnimAlpa).setDuration(1000);
+                                titleAnimator.setStartDelay(2000);
+                                titleAnimator.start();
+                            }
+                        });
+                        bukketAnim.start();
+
+                        //icon缩小
+                        for (View mViewObject : mViewObjects) {
+                            ObjectAnimator itemAnim = ObjectAnimator.ofPropertyValuesHolder(mViewObject, buketX, buketY).setDuration(500);
+                            itemAnim.setInterpolator(new LinearInterpolator());
+                            itemAnim.setStartDelay(startTime);
+                            itemAnim.start();
+                        }
+                    }
                 }
             });
+            set.start();
         }
-
-
-        //上升动画
-     /*   PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 0.6f, 1.3f, 1f);
-        PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f, 0.6f, 1.3f, 1f);
-        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("translationY", 1f, SizeUtils.dp2px(100) - mBuket.getTop());
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mBuket, pvhY, pvhZ, pvhZ).setDuration(400);
-        objectAnimator.setStartDelay(1000);
-        objectAnimator.start();*/
-
-        //抖动
-    /*    int delta = SizeUtils.dp2px(4);
-        PropertyValuesHolder pvhTranslateX = PropertyValuesHolder.ofKeyframe(View.SCALE_X,
-                Keyframe.ofFloat(0f, 0),
-                Keyframe.ofFloat(.10f, -delta),
-                Keyframe.ofFloat(.26f, delta),
-                Keyframe.ofFloat(.42f, -delta),
-                Keyframe.ofFloat(.58f, delta),
-                Keyframe.ofFloat(.74f, -delta),
-                Keyframe.ofFloat(.90f, delta),
-                Keyframe.ofFloat(1f, delta)
-        );
-        ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(mBuket, pvhTranslateX).setDuration(1000);
-        objectAnimator.setStartDelay(1000);
-        objectAnimator.setRepeatCount(10);
-        objectAnimator.setInterpolator(new LinearInterpolator());
-        objectAnimator.setRepeatMode(ValueAnimator.REVERSE);
-        objectAnimator.start();*/
-
-        //显示logo
-    /*    ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1f);
-        valueAnimator.setStartDelay(2000);
-        valueAnimator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                findViewById(R.id.anim_panel).setVisibility(View.GONE);
-                mLogoImage.setVisibility(View.VISIBLE);
-                mNameText.setVisibility(View.VISIBLE);
-            }
-        });
-        valueAnimator.start();*/
     }
 
     private void initView() {
         mViewObjects.add(findViewById(R.id.icon_1));
-//        mViewObjects.add(findViewById(R.id.icon_2));
-//        mViewObjects.add(findViewById(R.id.icon_3));
-//        mViewObjects.add(findViewById(R.id.icon_4));
-//        mViewObjects.add(findViewById(R.id.icon_5));
+        mViewObjects.add(findViewById(R.id.icon_2));
+        mViewObjects.add(findViewById(R.id.icon_3));
+        mViewObjects.add(findViewById(R.id.icon_4));
+        mViewObjects.add(findViewById(R.id.icon_5));
         mBuket = findViewById(R.id.target);
         mLogoImage = findViewById(R.id.img_logo);
         mNameText = findViewById(R.id.txt_name);
@@ -157,80 +184,5 @@ public class WelcomeActivity extends Activity {
         tv_summary.setText(spanStr);
         tv_summary.setHighlightColor(Color.TRANSPARENT);
         tv_summary.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    private void initAnimations() {
-        final List<View> viewObjects = mViewObjects;
-        for (View view : viewObjects) {
-            mAnims.add(new TogetherAnim(view));
-        }
-    }
-
-    static class TogetherAnim extends ValueAnimator implements ValueAnimator.AnimatorUpdateListener {
-        private int finalX;
-        private int finalY;
-        private View targetView;
-
-        private int startX;
-        private int startY;
-
-        private int mCurrentX;
-        private int mCurrentY;
-
-        private float mApha;
-
-        public static final long DURATION = 500;
-
-        int radius = 0;
-        float angle = 0;
-        int centerX = 0;
-        int centerY = 0;
-
-        public TogetherAnim(View targetView) {
-            this.targetView = targetView;
-            setFloatValues(0, 1f);
-            setDuration(DURATION);
-            setInterpolator(new OvershootInterpolator(2.0f));
-            addUpdateListener(this);
-        }
-
-        public void start(float finalX, float finalY, long delay) {
-            setStartDelay(delay);
-            this.finalX = (int) finalX;
-            this.finalY = (int) finalY;
-            startX = (int) targetView.getX();
-            startY = (int) targetView.getY();
-            mCurrentX = startX;
-            mCurrentY = startY;
-
-            //半径
-            int distance = (int) Math.sqrt(Math.pow(finalX - startX, 2) + Math.pow(finalY - startY, 2));
-            radius = (int) (distance / 1.5f);
-            angle = (float) Math.toDegrees(Math.acos(1 - (Math.pow(distance, 2) / (2 * Math.pow(radius, 2)))));
-            //todo 圆心
-
-            if (DEBUG) {
-                Log.d(TAG, "start: dis" + distance + " 半径=" + radius + " angle=" + angle);
-                Log.d(TAG, "start: 检测：" + (int) Math.sqrt(Math.pow(startX - centerX, 2) + Math.pow(startX - centerY, 2)));
-            }
-            super.start();
-        }
-
-        private void logic(float value, long time) {
-
-            float currentAngle = value * angle;
-
-            mCurrentX = (int) (centerX + radius * Math.cos(currentAngle * Math.PI / 180));
-            mCurrentY = (int) (centerY + radius * Math.sin(currentAngle * Math.PI / 180));
-        }
-
-
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            logic(Float.parseFloat(getAnimatedValue().toString()), animation.getCurrentPlayTime());
-            targetView.setTranslationX(mCurrentX);
-            targetView.setTranslationY(mCurrentY);
-//            targetView.setAlpha(mApha);
-        }
     }
 }
