@@ -1,1 +1,1 @@
-include ':app','lib-circularprogressview'
+include ':app', ':lib_drag', 'lib-circularprogressview'
