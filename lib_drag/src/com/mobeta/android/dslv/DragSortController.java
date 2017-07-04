@@ -1,12 +1,16 @@
 package com.mobeta.android.dslv;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 /**
  * Class that starts and stops item drags on a {@link DragSortListView}
@@ -19,7 +23,7 @@ import android.widget.AdapterView;
  * {@link DragSortListView#setFloatViewManager()} of your
  * {@link DragSortListView} instance.
  */
-class DragSortController extends SimpleFloatViewManager implements View.OnTouchListener, GestureDetector.OnGestureListener {
+class DragSortController implements DragSortListView.FloatViewManager, View.OnTouchListener, GestureDetector.OnGestureListener {
 
     /**
      * Drag init mode enum.
@@ -81,6 +85,12 @@ class DragSortController extends SimpleFloatViewManager implements View.OnTouchL
     private DragSortListView mDslv;
     private int mPositionX;
 
+    private Bitmap mFloatBitmap;
+
+    private ImageView mImageView;
+
+    private int mFloatBGColor = Color.BLACK;
+
 
     DragSortController(DragSortListView dslv) {
         this(dslv, 0, ON_DOWN, FLING_REMOVE);
@@ -103,7 +113,6 @@ class DragSortController extends SimpleFloatViewManager implements View.OnTouchL
      */
     DragSortController(DragSortListView dslv, int dragHandleId, int dragInitMode,
                        int removeMode, int clickRemoveId, int flingHandleId) {
-        super(dslv);
         mDslv = dslv;
         mDetector = new GestureDetector(dslv.getContext(), this);
         mFlingRemoveDetector = new GestureDetector(dslv.getContext(), mFlingRemoveListener);
@@ -258,6 +267,11 @@ class DragSortController extends SimpleFloatViewManager implements View.OnTouchL
         if (mRemoveEnabled && mIsRemoving) {
             mPositionX = position.x;
         }
+    }
+
+
+    public void setBackgroundColor(int bgColor) {
+        this.mFloatBGColor = bgColor;
     }
 
     /**
@@ -418,6 +432,52 @@ class DragSortController extends SimpleFloatViewManager implements View.OnTouchL
         // do nothing
     }
 
+    /**
+     * This simple implementation creates a Bitmap copy of the
+     * list item currently shown at ListView <code>position</code>.
+     */
+    @Override
+    public View onCreateFloatView(int position) {
+        // Guaranteed that this will not be null? I think so. Nope, got
+        // a NullPointerException once...
+        View v = mDslv.getChildAt(position + mDslv.getHeaderViewsCount() - mDslv.getFirstVisiblePosition());
+
+        if (v == null) {
+            return null;
+        }
+
+        v.setPressed(false);
+
+        // Create a copy of the drawing cache so that it does not get
+        // recycled by the framework when the list tries to clean up memory
+        //v.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        v.setDrawingCacheEnabled(true);
+        mFloatBitmap = Bitmap.createBitmap(v.getDrawingCache());
+        v.setDrawingCacheEnabled(false);
+
+        if (mImageView == null) {
+            mImageView = new ImageView(mDslv.getContext());
+        }
+        mImageView.setBackgroundColor(mFloatBGColor);
+        mImageView.setPadding(0, 0, 0, 0);
+        mImageView.setImageBitmap(mFloatBitmap);
+        mImageView.setLayoutParams(new ViewGroup.LayoutParams(v.getWidth(), v.getHeight()));
+
+        return mImageView;
+    }
+
+    /**
+     * Removes the Bitmap from the ImageView created in
+     * onCreateFloatView() and tells the system to recycle it.
+     */
+    @Override
+    public void onDestroyFloatView(View floatView) {
+        ((ImageView) floatView).setImageDrawable(null);
+
+        mFloatBitmap.recycle();
+        mFloatBitmap = null;
+    }
+
     private GestureDetector.OnGestureListener mFlingRemoveListener =
             new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -441,5 +501,4 @@ class DragSortController extends SimpleFloatViewManager implements View.OnTouchL
                     return false;
                 }
             };
-
 }
