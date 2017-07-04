@@ -1,4 +1,0 @@
-int anim guide_fade_in 0x7f020000
-int anim guide_fade_out 0x7f020001
-int id high_light_view 0x7f030000
-int style guide_anim_style 0x7f040000
