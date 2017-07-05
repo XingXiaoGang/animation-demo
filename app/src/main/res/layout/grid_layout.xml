@@ -7,6 +7,8 @@
     android:layout_marginBottom="10dp"
     android:orientation="vertical"
     android:overScrollMode="never"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
     android:scrollbars="none">
 
 </GridView>
