@@ -24,6 +24,7 @@
         <activity android:name=".FocusActivity" />
         <activity android:name=".SensorActivity" />
         <activity android:name=".WelcomeActivity" />
+        <activity android:name=".DrawTestActivity" />
     </application>
 
 </manifest>

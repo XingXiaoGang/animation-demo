@@ -114,11 +114,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             }
             case R.id.window: {
-
                 Dialog dialog = new Dialog(MainActivity.this, R.style.ShareDialog);
                 dialog.show();
-
-
+                break;
+            }
+            case R.id.draw: {
+                startActivity(new Intent(this, DrawTestActivity.class));
                 break;
             }
         }
