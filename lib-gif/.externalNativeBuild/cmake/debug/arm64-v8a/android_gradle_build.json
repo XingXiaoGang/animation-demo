@@ -1,0 +1,131 @@
+
+{
+	"buildFiles" : 
+	[
+		"D:/git/projects-common/animationDemo/lib-gif/src/main/c/CMakeLists.txt"
+	],
+	"cFileExtensions" : [ "c" ],
+	"cleanCommands" : 
+	[
+		"C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\arm64-v8a --target clean"
+	],
+	"libraries" : 
+	{
+		"pl_droidsonroids_gif-Debug-arm64-v8a" : 
+		{
+			"abi" : "arm64-v8a",
+			"artifactName" : "pl_droidsonroids_gif",
+			"buildCommand" : "C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\arm64-v8a --target pl_droidsonroids_gif",
+			"buildType" : "debug",
+			"files" : 
+			[
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/bitmap.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/control.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/decoding.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/dispose.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/drawing.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/exception.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/gif.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/giflib/dgif_lib.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/giflib/gifalloc.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/giflib/openbsd-reallocarray.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/init.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/jni.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/metadata.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/opengl.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/surface.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				},
+				
+				{
+					"flags" : "  --target=aarch64-none-linux-android --gcc-toolchain=C:/android/ndk/android-ndk-r15b/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/android/ndk/android-ndk-r15b/sysroot -Dpl_droidsonroids_gif_EXPORTS  -isystem C:/android/ndk/android-ndk-r15b/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -std=c11 -Weverything -Wall -DNDEBUG -Os -g0 -fvisibility=hidden -O0 -fno-limit-debug-info  -fPIC      -c ",
+					"src" : "D:/git/projects-common/animationDemo/lib-gif/src/main/c/time.c",
+					"workingDirectory" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/arm64-v8a"
+				}
+			],
+			"output" : "D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/debug/obj/arm64-v8a/libpl_droidsonroids_gif.so",
+			"toolchain" : "2185926353"
+		}
+	},
+	"toolchains" : 
+	{
+		"2185926353" : 
+		{
+			"cCompilerExecutable" : "C:/android/ndk/android-ndk-r15b/toolchains/llvm/prebuilt/windows-x86_64/bin/clang.exe",
+			"cppCompilerExecutable" : "C:/android/ndk/android-ndk-r15b/toolchains/llvm/prebuilt/windows-x86_64/bin/clang++.exe"
+		}
+	}
+}

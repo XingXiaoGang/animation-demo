@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -74,27 +73,6 @@ public class RightCornerImageView extends SizeBaseImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        final Rect displayRect = getDrawRect();
-        if (displayRect.width() > 0) {
-
-            //2.切右上角的圆弧
-            final Path path = mRightTopCorner;
-            path.reset();
-            path.moveTo(displayRect.right - mRadius, displayRect.top);
-            //右上圆角
-            path.arcTo(mRightTopArc, 270, 90);
-            path.lineTo(displayRect.right, displayRect.top + mRadius);
-            path.lineTo(displayRect.right, displayRect.top);
-            path.close();
-            try {
-                canvas.clipPath(path, Region.Op.DIFFERENCE);
-            } catch (Exception e) {
-                if (DEBUG) {
-                    Log.e(TAG, "onDraw: clipPath error :", e);
-                }
-            }
-        }
         super.onDraw(canvas);
     }
 }

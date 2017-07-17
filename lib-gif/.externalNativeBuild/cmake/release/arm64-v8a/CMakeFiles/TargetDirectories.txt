@@ -1,0 +1,3 @@
+D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/pl_droidsonroids_gif.dir
+D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/git/projects-common/animationDemo/lib-gif/.externalNativeBuild/cmake/release/arm64-v8a/CMakeFiles/rebuild_cache.dir

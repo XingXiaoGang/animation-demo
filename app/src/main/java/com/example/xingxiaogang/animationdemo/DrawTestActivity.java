@@ -100,8 +100,8 @@ public class DrawTestActivity extends Activity {
                 startX = i % rowCount * oneW;
                 startY = i / rowCount * oneW;
                 //画圆
-//                int count = canvas.saveLayer(startX, startY, startX + oneW, startY + oneW, mPaint, Canvas.CLIP_SAVE_FLAG);
-                mPaint.setColor(Color.YELLOW);
+                int count = canvas.saveLayer(startX, startY, startX + oneW, startY + oneW, mPaint, Canvas.CLIP_SAVE_FLAG);
+                mPaint.setColor(Color.CYAN);
                 mRound.set(startX, startY, startX + r * 2, startY + r * 2);
                 canvas.drawOval(mRound, mPaint);
 
@@ -111,7 +111,7 @@ public class DrawTestActivity extends Activity {
                 mRect.set(startX + oneW / 3, startY + oneW / 3, startX + oneW, startY + oneW);
                 canvas.drawRect(mRect, mPaint);
                 mPaint.setXfermode(null);
-//                canvas.restoreToCount(count);
+                canvas.restoreToCount(count);
             }
 
 

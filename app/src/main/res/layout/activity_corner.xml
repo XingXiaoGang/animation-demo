@@ -10,7 +10,7 @@
 
     <com.example.xingxiaogang.animationdemo.view.RightCornerImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:angleWidth="8dp"
         app:baseWith="width"
         app:imageScale="0.8"

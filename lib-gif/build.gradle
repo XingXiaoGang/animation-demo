@@ -1,0 +1,78 @@
+plugins {
+	id 'com.jfrog.bintray' version '1.7.3'
+}
+
+apply plugin: 'com.android.library'
+apply from: 'gradle-mvn-push.gradle'
+
+version = VERSION_NAME
+group = GROUP
+
+android {
+	compileSdkVersion Integer.parseInt(CompileSdkVersion)
+	buildToolsVersion BuildToolsVersion
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_7
+		targetCompatibility JavaVersion.VERSION_1_7
+	}
+
+	defaultConfig {
+		versionName project.version
+		minSdkVersion Integer.parseInt(MinSdkVersion)
+		targetSdkVersion Integer.parseInt(TargetSdkVersion)
+		consumerProguardFiles 'consumer-proguard-rules.pro'
+		externalNativeBuild {
+			cmake {
+				arguments "-DANDROID_PLATFORM=android-$MinSdkVersion"
+				cFlags '-std=c11', '-Weverything', '-Wall'
+				if (isDebugBuild()) {
+					cFlags '-DDEBUG', '-g'
+				} else {
+					cFlags '-DNDEBUG', '-Os', '-g0', '-fvisibility=hidden'
+				}
+			}
+		}
+	}
+	externalNativeBuild {
+		cmake {
+			path 'src/main/c/CMakeLists.txt'
+		}
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+	testOptions {
+		unitTests.returnDefaultValues = true
+	}
+}
+
+dependencies {
+	provided "com.android.support:support-annotations:$SupportVersion_annotation"
+}
+
+bintray {
+	user = POM_DEVELOPER_ID
+	key = BINTRAY_API_KEY
+	pkg {
+		repo = 'maven'
+		name = "$group:$POM_ARTIFACT_ID"
+		licenses = ['MIT']
+	}
+	configurations = ['archives']
+}
+
+def isDebugBuild() {
+	!gradle.startParameter.taskNames.contains("uploadArchives") && VERSION_NAME.contains("SNAPSHOT")
+}
+
+task archiveSymbols(type: Tar) {
+	from new File(buildDir, 'intermediates/ndkBuild/release/obj/local')
+	baseName = "$POM_ARTIFACT_ID-symbols"
+	destinationDir = new File(buildDir, 'libs')
+	extension = 'tar.gz'
+	compression = Compression.GZIP
+}
