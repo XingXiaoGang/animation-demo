@@ -148,13 +148,16 @@ public class ActionMeterialView extends View implements IMenu, ValueAnimator.Ani
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        if (((int) ((ValueAnimator) animation).getAnimatedValue()) == 100) {
+        if (mState == STATE_OPENING) {
             mState = STATE_OPENED;
-        } else {
+            if (mExtenalListener != null) {
+                mExtenalListener.onAnimationEnd(animation);
+            }
+        } else if (mState == STATE_CLOSEING) {
             mState = STATE_CLOSED;
-        }
-        if (mExtenalListener != null) {
-            mExtenalListener.onAnimationEnd(animation);
+            if (mExtenalListener != null) {
+                mExtenalListener.onAnimationEnd(animation);
+            }
         }
     }
 

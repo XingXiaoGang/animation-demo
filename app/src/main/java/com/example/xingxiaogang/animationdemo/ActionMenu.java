@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,7 +20,11 @@ import java.util.List;
 
 public class ActionMenu extends LinearLayout implements IMenu, Animator.AnimatorListener {
 
+    private static final boolean DEBUG = true;
+    private static final String TAG = "ActionMenu";
     private List<IMenu> mSubComponent = new ArrayList<>();
+    private int mState = STATE_CLOSED;
+
 
     public ActionMenu(Context context) {
         super(context);
@@ -32,18 +37,11 @@ public class ActionMenu extends LinearLayout implements IMenu, Animator.Animator
     }
 
     private void initView(Context context, AttributeSet attrs) {
-        findComponent(this);
     }
 
     @Override
-    public void onViewAdded(View child) {
-        super.onViewAdded(child);
-        findComponent(this);
-    }
-
-    @Override
-    public void onViewRemoved(View child) {
-        super.onViewRemoved(child);
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
         findComponent(this);
     }
 
@@ -66,6 +64,12 @@ public class ActionMenu extends LinearLayout implements IMenu, Animator.Animator
                         return (int) (lhs.getDuration() - rhs.getDuration());
                     }
                 });
+                for (IMenu iMenu : mSubComponent) {
+                    if (DEBUG) {
+                        Log.d(TAG, "findComponent: " + iMenu.getDuration());
+                    }
+                }
+
                 //时间最长的那个
                 ((IMenu) mSubComponent.get(mSubComponent.size() - 1)).setListener(this);
             }
@@ -74,18 +78,26 @@ public class ActionMenu extends LinearLayout implements IMenu, Animator.Animator
 
     @Override
     public boolean open() {
-        for (IMenu iMenu : mSubComponent) {
-            iMenu.open();
+        if (mState == STATE_CLOSED) {
+            mState = STATE_OPENING;
+            for (IMenu iMenu : mSubComponent) {
+                iMenu.open();
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
     public boolean close() {
-        for (IMenu iMenu : mSubComponent) {
-            iMenu.close();
+        if (mState == STATE_OPENED) {
+            mState = STATE_CLOSEING;
+            for (IMenu iMenu : mSubComponent) {
+                iMenu.close();
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -95,10 +107,17 @@ public class ActionMenu extends LinearLayout implements IMenu, Animator.Animator
 
     @Override
     public boolean toggle() {
-        for (IMenu iMenu : mSubComponent) {
-            iMenu.toggle();
+        switch (mState) {
+            case STATE_OPENED: {
+                close();
+                return true;
+            }
+            case STATE_CLOSED: {
+                open();
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -118,7 +137,11 @@ public class ActionMenu extends LinearLayout implements IMenu, Animator.Animator
 
     @Override
     public void onAnimationEnd(Animator animation) {
-
+        if (mState == STATE_OPENING) {
+            mState = STATE_OPENED;
+        } else if (mState == STATE_CLOSEING) {
+            mState = STATE_CLOSED;
+        }
     }
 
     @Override
