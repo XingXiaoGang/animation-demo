@@ -25,6 +25,7 @@
         <activity android:name=".SensorActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".DrawTestActivity" />
+        <activity android:name=".ActionMenuActivity" />
     </application>
 
 </manifest>

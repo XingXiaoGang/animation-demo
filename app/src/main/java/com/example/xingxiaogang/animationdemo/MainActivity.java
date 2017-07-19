@@ -122,6 +122,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, DrawTestActivity.class));
                 break;
             }
+            case R.id.action_menu: {
+                startActivity(new Intent(this, ActionMenuActivity.class));
+                break;
+            }
         }
     }
 

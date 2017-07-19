@@ -7,7 +7,7 @@
 	"cFileExtensions" : [ "c" ],
 	"cleanCommands" : 
 	[
-		"C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\mips64 --target clean"
+		"C:\\android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\mips64 --target clean"
 	],
 	"libraries" : 
 	{
@@ -15,7 +15,7 @@
 		{
 			"abi" : "mips64",
 			"artifactName" : "pl_droidsonroids_gif",
-			"buildCommand" : "C:\\Android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\mips64 --target pl_droidsonroids_gif",
+			"buildCommand" : "C:\\android\\sdk\\cmake\\3.6.4111459\\bin\\cmake.exe --build D:\\git\\projects-common\\animationDemo\\lib-gif\\.externalNativeBuild\\cmake\\debug\\mips64 --target pl_droidsonroids_gif",
 			"buildType" : "debug",
 			"files" : 
 			[
