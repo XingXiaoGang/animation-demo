@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.xingxiaogang.animationdemo.view.menu.IMenu;
+
 /**
  * Created by xingxiaogang on 2017/7/18.
  */

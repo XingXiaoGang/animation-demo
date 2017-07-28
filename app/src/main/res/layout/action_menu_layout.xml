@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.xingxiaogang.animationdemo.ActionMenu xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.xingxiaogang.animationdemo.view.menu.ActionMenu xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/action_menu"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -11,7 +11,7 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <com.example.xingxiaogang.animationdemo.ActionMenuLayout
+    <com.example.xingxiaogang.animationdemo.view.menu.ActionMenuLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -159,9 +159,9 @@
                 android:background="@drawable/shape_round_red" />
         </LinearLayout>
 
-    </com.example.xingxiaogang.animationdemo.ActionMenuLayout>
+    </com.example.xingxiaogang.animationdemo.view.menu.ActionMenuLayout>
 
-    <com.example.xingxiaogang.animationdemo.ActionMeterialView
+    <com.example.xingxiaogang.animationdemo.view.menu.ActionMeterialView
         android:id="@+id/menu_handle"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -171,4 +171,4 @@
         android:onClick="onClick"
         android:padding="12dp" />
 
-</com.example.xingxiaogang.animationdemo.ActionMenu>
+</com.example.xingxiaogang.animationdemo.view.menu.ActionMenu>

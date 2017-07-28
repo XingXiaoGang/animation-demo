@@ -1,4 +1,4 @@
-package com.example.xingxiaogang.animationdemo;
+package com.example.xingxiaogang.animationdemo.view.menu;
 
 import android.animation.Animator;
 
