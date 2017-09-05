@@ -26,6 +26,7 @@
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".DrawTestActivity" />
         <activity android:name=".ActionMenuActivity" />
+        <activity android:name=".SwitchActivity" />
     </application>
 
 </manifest>

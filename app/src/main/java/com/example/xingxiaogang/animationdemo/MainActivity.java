@@ -126,6 +126,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ActionMenuActivity.class));
                 break;
             }
+            case R.id.swicher: {
+                startActivity(new Intent(this, SwitchActivity.class));
+                break;
+            }
         }
     }
 
