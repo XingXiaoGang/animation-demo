@@ -19,6 +19,11 @@ import com.example.xingxiaogang.animationdemo.R;
 
 /**
  * Created by xingxiaogang on 2017/9/26.
+ * 可滑动的Item容器
+ * 必需指定的部件:dragContentId .要滑动的内容区域
+ * 必需指定的部件:dragItemHeadId .右滑露出的部分
+ * 必需指定的部件:dragItemTailId .左滑露出的部分
+ * 可自定义滑动方式： swipeMode
  */
 
 public class SwipeItemLayout extends FrameLayout implements ValueAnimator.AnimatorUpdateListener, Animator.AnimatorListener {
@@ -44,6 +49,8 @@ public class SwipeItemLayout extends FrameLayout implements ValueAnimator.Animat
     private int mDistanceX;
     private int mTouchSlop;
     private int mDragTargetResID;
+    private int mDragHeadResID;
+    private int mDragTailResID;
     private ValueAnimator mValueAnimator;
     private ISwipeListener mSwipeListener;
 
@@ -76,6 +83,8 @@ public class SwipeItemLayout extends FrameLayout implements ValueAnimator.Animat
             TypedArray a = getContext().obtainStyledAttributes(attr, R.styleable.SwipeItemLayout);
             mDragMode = a.getInt(R.styleable.SwipeItemLayout_swipeMode, DRAG_LEFT);
             mDragTargetResID = a.getResourceId(R.styleable.SwipeItemLayout_dragContentId, 0);
+            mDragHeadResID = a.getResourceId(R.styleable.SwipeItemLayout_dragItemHeadId, 0);
+            mDragTailResID = a.getResourceId(R.styleable.SwipeItemLayout_dragItemTailId, 0);
             a.recycle();
         }
     }
@@ -85,6 +94,11 @@ public class SwipeItemLayout extends FrameLayout implements ValueAnimator.Animat
         if (child.getId() == mDragTargetResID) {
             canvas.save();
             canvas.translate(mDistanceX, 0);
+            child.draw(canvas);
+            canvas.restore();
+        } else if (child.getId() == mDragTailResID) {
+            canvas.save();
+            canvas.translate(getWidth() + mDistanceX, 0);
             child.draw(canvas);
             canvas.restore();
         } else {
@@ -198,7 +212,6 @@ public class SwipeItemLayout extends FrameLayout implements ValueAnimator.Animat
         isReseting = false;
         isRemoving = false;
         mDistanceX = 0;
-        postInvalidate();
     }
 
     @Override

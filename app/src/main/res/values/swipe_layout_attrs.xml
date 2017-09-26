@@ -11,6 +11,8 @@
             <enum name="DRAG_BOTH" value="2" />
         </attr>
         <attr name="dragContentId" format="reference" />
+        <attr name="dragItemTailId" format="reference" />
+        <attr name="dragItemHeadId" format="reference" />
     </declare-styleable>
 
 </resources>
