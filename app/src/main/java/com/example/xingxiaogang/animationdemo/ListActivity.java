@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xingxiaogang.animationdemo.drawable.AvatorDrawable;
 import com.mobeta.android.dslv.DragSortListView;
@@ -78,7 +79,7 @@ public class ListActivity extends Activity {
         String content;
     }
 
-    private class Adapter extends BaseAdapter implements DragSortListView.DragListener, DragSortListView.DropListener {
+    private class Adapter extends BaseAdapter implements DragSortListView.DragListener, DragSortListView.DropListener, View.OnClickListener {
 
         private SparseIntArray mListMapping = new SparseIntArray();
         private List<Bean> mData = new ArrayList<>();
@@ -120,6 +121,9 @@ public class ListActivity extends Activity {
             holder.imageView.setImageDrawable(new AvatorDrawable(bean.title));
             holder.summery.setText(bean.content);
             holder.title.setText(bean.title);
+            convertView.setOnClickListener(this);
+            holder.title.setTag("title");
+            holder.title.setOnClickListener(this);
             return convertView;
         }
 
@@ -173,6 +177,11 @@ public class ListActivity extends Activity {
             for (int i = 0; i < size; ++i) {
                 mListMapping.delete(toRemove.get(i));
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(), "Click:" + v.getTag(), Toast.LENGTH_LONG).show();
         }
     }
 
