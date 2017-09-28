@@ -138,7 +138,7 @@
             <ImageView
                 android:id="@+id/loading_icon"
                 android:layout_width="30dp"
-                android:layout_height="10dp"
+                android:layout_height="30dp"
                 android:scaleType="centerCrop" />
 
             <Button
