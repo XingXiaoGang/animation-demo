@@ -20,13 +20,14 @@
         </activity>
         <activity android:name=".ListActivity" />
         <activity android:name=".CurtainActivity" />
-        <activity android:name=".CornerImageActivity" />
+        <activity android:name=".ImageActivity" />
         <activity android:name=".FocusActivity" />
         <activity android:name=".SensorActivity" />
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".DrawTestActivity" />
         <activity android:name=".ActionMenuActivity" />
         <activity android:name=".SwitchActivity" />
+        <activity android:name=".ProgressActivity" />
     </application>
 
 </manifest>

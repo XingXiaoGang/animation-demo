@@ -7,10 +7,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.xingxiaogang.animationdemo.view.ColorDotLoadingDrawable;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
 import com.plattysoft.leonids.ParticleSystem;
 
@@ -42,8 +37,6 @@ import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
-    private RadarView iconScanView;
-    private ViewGroup mRootView;
     private String TAG = "TEST_";
     public static int rowCount = 2;
     public static int columns = 3;
@@ -53,13 +46,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        iconScanView = (RadarView) findViewById(R.id.icon);
-        mRootView = (ViewGroup) findViewById(R.id.rootView);
+        initParticleAt(findViewById(R.id.icon));
+    }
 
-        ColorDotLoadingDrawable colorDotLoadingDrawable = new ColorDotLoadingDrawable(SizeUtils.dp2px(this, 2));
-//        ((ImageView) findViewById(R.id.loading_icon)).setImageDrawable(colorDotLoadingDrawable);
-
-        iconScanView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+    private void initParticleAt(final View view) {
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 //抛物线
@@ -69,63 +60,36 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 ps2.setRotationSpeedRange(90, 360);
                 ps2.setAcceleration(0.0001f, 80);
                 ps2.setFadeOut(800);
-                ps2.emit(iconScanView, 10);
+                ps2.emit(view, 10);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    iconScanView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 } else {
-                    iconScanView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }
         });
-
-
-        List<Drawable> drawables = new ArrayList<>();
-        drawables.add(getResources().getDrawable(R.mipmap.star_pink));
-        drawables.add(getResources().getDrawable(R.mipmap.star_pink_aplha));
-        drawables.add(getResources().getDrawable(R.mipmap.ic_launcher));
-        drawables.add(getResources().getDrawable(R.drawable.icon_retry));
-
-        long time = System.currentTimeMillis();
-        for (Drawable drawable : drawables) {
-            if (drawable instanceof BitmapDrawable) {
-                Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
-                BitmapUtils.isAlphaBitmap(bitmap, 0.5f);
-            }
-        }
-        System.out.println("耗时：" + (System.currentTimeMillis() - time));
-
-        final ImageView imageView = ((ImageView) findViewById(R.id.loading_icon));
-        imageView.setImageResource(R.drawable.icon_retry);
-        imageView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_retry).copy(Bitmap.Config.ARGB_8888, true);
-                bitmap = BitmapUtils.darkBitmapIfNeed(bitmap, 0.5f);
-                imageView.setImageBitmap(bitmap);
-            }
-        }, 2000);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        iconScanView.stopFlat();
+        ((RadarView) findViewById(R.id.icon)).stopFlat();
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start: {
-                iconScanView.start();
+                ((RadarView) findViewById(R.id.icon)).start();
                 break;
             }
             case R.id.stop: {
-                iconScanView.stopFlat();
+                ((RadarView) findViewById(R.id.icon)).stopFlat();
                 break;
             }
-            case R.id.cornerImage_window: {
-                startActivity(new Intent(this, CornerImageActivity.class));
+            case R.id.image_window: {
+                startActivity(new Intent(this, ImageActivity.class));
                 break;
             }
             case R.id.list: {
@@ -159,6 +123,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             case R.id.swicher: {
                 startActivity(new Intent(this, SwitchActivity.class));
+                break;
+            }
+            case R.id.progress: {
+                startActivity(new Intent(this, ProgressActivity.class));
                 break;
             }
         }

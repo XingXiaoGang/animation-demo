@@ -94,53 +94,6 @@
                     android:textSize="12sp" />
             </RelativeLayout>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.example.xingxiaogang.animationdemo.avi.AVLoadingIndicatorView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/float_content_window_loading_view"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    app:indicator="CircleLine"
-                    app:indicator_color="@color/primary_color" />
-
-                <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/progress_view"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:padding="0dp"
-                    app:cpv_animAutostart="true"
-                    app:cpv_color="#831848c2"
-                    app:cpv_indeterminate="true"
-                    app:cpv_thickness="5dp" />
-
-                <com.github.rahatarmanahmed.cpv.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:padding="0dp"
-                    android:rotation="180"
-                    app:cpv_animAutostart="true"
-                    app:cpv_color="#831848c2"
-                    app:cpv_indeterminate="true"
-                    app:cpv_thickness="5dp" />
-            </FrameLayout>
-
-            <ImageView
-                android:id="@+id/loading_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:scaleType="centerCrop" />
-
             <Button
                 android:id="@+id/start"
                 android:layout_width="match_parent"
@@ -156,11 +109,18 @@
                 android:text="平滑中断" />
 
             <Button
-                android:id="@+id/cornerImage_window"
+                android:id="@+id/progress"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:onClick="onClick"
-                android:text="圆角控件" />
+                android:text="进度条" />
+
+            <Button
+                android:id="@+id/image_window"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onClick"
+                android:text="图片处理" />
 
             <Button
                 android:id="@+id/list"
