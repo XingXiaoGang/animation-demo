@@ -9,10 +9,22 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipChildren="false"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="12dp">
+
+        <TextView
+            android:id="@+id/progress_banner"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/blue"
+            android:gravity="center_vertical"
+            android:paddingLeft="16sp"
+            android:text="正在扫描：com.whatsapp"
+            android:textColor="@color/white"
+            android:textSize="14sp">
+
+        </TextView>
 
         <FrameLayout
             android:layout_width="match_parent"
