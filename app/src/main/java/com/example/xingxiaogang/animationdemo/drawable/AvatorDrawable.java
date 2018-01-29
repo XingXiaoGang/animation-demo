@@ -8,7 +8,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
-import com.example.xingxiaogang.animationdemo.ListActivity;
+import com.example.xingxiaogang.animationdemo.RecylerActivity;
 import com.example.xingxiaogang.animationdemo.SizeUtils;
 
 /**
@@ -34,7 +34,7 @@ public class AvatorDrawable extends Drawable {
         }
 
         mTextPaint = new Paint();
-        mTextPaint.setTextSize(SizeUtils.dp2px(ListActivity.mInstance, 20));
+        mTextPaint.setTextSize(SizeUtils.dp2px(RecylerActivity.mInstance, 20));
         mTextPaint.setColor(Color.WHITE);
         mTextPaint.setDither(true);
         mTextPaint.setTextAlign(Paint.Align.CENTER);

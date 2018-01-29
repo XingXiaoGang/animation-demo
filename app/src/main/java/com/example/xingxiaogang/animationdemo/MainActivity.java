@@ -96,6 +96,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ListActivity.class));
                 break;
             }
+            case R.id.recycler:{
+                startActivity(new Intent(this, RecylerActivity.class));
+                break;
+            }
             case R.id.focus_open: {
                 startActivity(new Intent(this, FocusActivity.class));
                 break;

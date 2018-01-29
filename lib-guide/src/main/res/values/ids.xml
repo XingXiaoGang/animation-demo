@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--high light view unique id -->
-    <item name="high_light_view" type="id"/>
+    <item name="high_light_view" type="id" />
+    <item name="nest_scroll_header" type="id" />
+    <item name="nest_scroll_pin" type="id" />
+    <item name="nest_scroll_scroller" type="id" />
 </resources>
