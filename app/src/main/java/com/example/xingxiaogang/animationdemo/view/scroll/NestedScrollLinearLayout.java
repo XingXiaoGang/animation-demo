@@ -1,18 +1,17 @@
 package com.example.xingxiaogang.animationdemo.view.scroll;
 
-import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.VelocityTracker;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
 
@@ -20,80 +19,192 @@ import com.example.xingxiaogang.animationdemo.R;
 
 /**
  * Created by xingxiaogang on 2018/1/29.
+ * 一个类似于CoordinatorLayout的layout，为了灵活实现需求
+ * <p>
+ * 使用方法：
+ * 对于内部的viewPager 打上 id=R.id.nest_scroll_scroller
+ * 对于内部的header 打上 id=R.id.nest_scroll_header
  */
-
+@SuppressLint("LongLogTag")
 public class NestedScrollLinearLayout extends LinearLayout implements NestedScrollingParent {
 
-    private static final String TAG = "StickyNavLayout";
-    private int TOP_CHILD_FLING_THRESHOLD = 3;
+    private static final boolean DEBUG = true;
+    private static final String TAG = "NestedScrollLinearLayout";
 
     private View mTop;
-    private View mNav;
     private ViewPager mViewPager;
-
     private int mTopViewHeight;
-
     private OverScroller mScroller;
-    private VelocityTracker mVelocityTracker;
-    private ValueAnimator mOffsetAnimator;
-    private Interpolator mInterpolator;
-    private int mTouchSlop;
-    private int mMaximumVelocity, mMinimumVelocity;
+    private NestedScrollingParentHelper mParentHelper;
 
-    private float mLastY;
-    private boolean mDragging;
+    //自动显示、隐藏
+    boolean isMoving;
+    private int mDownY;
+    private boolean isSlideUpOrDown;
+
+    //是否默认隐藏head
+    private boolean isDefaultHideHead = true;
+    private boolean isFirstLayout = true;
+
+    public NestedScrollLinearLayout(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    public NestedScrollLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
+
+    private void init(Context context) {
+        setOrientation(LinearLayout.VERTICAL);
+        mScroller = new OverScroller(context);
+        mParentHelper = new NestedScrollingParentHelper(this);
+    }
+
+    public void setDefaultHideHead(boolean defaultHideHead) {
+        isDefaultHideHead = defaultHideHead;
+    }
+
+    public void setHeadViewVisibility(int visibility) {
+        if (DEBUG) {
+            Log.d(TAG, "setHeadViewVisibility: ");
+        }
+        mTop.setVisibility(visibility);
+        if (visibility == View.GONE) {
+            scrollTo(0, 0);
+        }
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mTop = findViewById(R.id.nest_scroll_header);
+        mViewPager = (ViewPager) findViewById(R.id.nest_scroll_scroller);
+        //FIXME 要与程序里面的id一致
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (DEBUG) {
+            Log.i(TAG, "onMeasure: height= " + getMeasuredHeight() + " pagerHeight=" + mViewPager.getMeasuredHeight() + " topHeight=" + mTop.getMeasuredHeight());
+        }
+        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
+        params.height = getMeasuredHeight();
+        mViewPager.setLayoutParams(params);
+        //todo 问题 布局变化时，measure异常
+        mTopViewHeight = mTop.getMeasuredHeight();
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        if (DEBUG) {
+            Log.i(TAG, "onLayout: ");
+        }
+        if (isDefaultHideHead && isFirstLayout && mTop.getVisibility() == VISIBLE) {
+            scrollTo(0, mTopViewHeight);
+            isFirstLayout = false;
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (DEBUG) {
+            Log.i(TAG, "onSizeChanged: ");
+        }
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    @Override
+    public void computeScroll() {
+        Log.i(TAG, "computeScroll: " + mScroller.getCurrY());
+        if (mScroller.computeScrollOffset()) {
+            scrollTo(0, mScroller.getCurrY());
+            invalidate();
+        }
+    }
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.i(TAG, "onStartNestedScroll");
+        if (DEBUG) {
+            Log.i(TAG, "onStartNestedScroll nestedScrollAxes=" + nestedScrollAxes);
+        }
+        //true if this ViewParent accepts the nested scroll operation
         return true;
     }
 
     @Override
     public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
-        Log.i(TAG, "onNestedScrollAccepted");
+        if (DEBUG) {
+            Log.i(TAG, "onNestedScrollAccepted");
+        }
+        mParentHelper.onNestedScrollAccepted(child, target, nestedScrollAxes);
     }
 
     @Override
     public void onStopNestedScroll(View target) {
-        Log.i(TAG, "onStopNestedScroll");
-    }
-
-    @Override
-    public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        Log.i(TAG, "onNestedScroll");
+        if (DEBUG) {
+            Log.i(TAG, "onStopNestedScroll getScrolly=" + getScrollY());
+        }
+        mParentHelper.onStopNestedScroll(target);
     }
 
     @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
-        Log.i(TAG, "onNestedPreScroll");
-        boolean hiddenTop = dy > 0 && getScrollY() < mTopViewHeight;
+        if (DEBUG) {
+            Log.v(TAG, "onNestedPreScroll ");
+        }
+        if (mTop.getVisibility() != VISIBLE) {
+            return;
+        }
+        boolean hiddenTop = dy > 0 && getScrollY() <= mTopViewHeight;
         boolean showTop = dy < 0 && getScrollY() >= 0 && !ViewCompat.canScrollVertically(target, -1);
 
         if (hiddenTop || showTop) {
+            //防止下滑超出
+            if (getScrollY() >= 0 && getScrollY() + dy < 0) {
+                dy = -getScrollY();
+            }
+            //防止上滑超出
+            if (getScrollY() <= mTopViewHeight && getScrollY() + dy > mTopViewHeight) {
+                dy = mTopViewHeight - getScrollY();
+            }
+            //整体滚动
             scrollBy(0, dy);
             consumed[1] = dy;
         }
     }
 
-
     @Override
-    public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
-        //如果是recyclerView 根据判断第一个元素是哪个位置可以判断是否消耗
-        //这里判断如果第一个元素的位置是大于TOP_CHILD_FLING_THRESHOLD的
-        //认为已经被消耗，在animateScroll里不会对velocityY<0时做处理
-        if (target instanceof RecyclerView && velocityY < 0) {
-            final RecyclerView recyclerView = (RecyclerView) target;
-            final View firstChild = recyclerView.getChildAt(0);
-            final int childAdapterPosition = recyclerView.getChildAdapterPosition(firstChild);
-            consumed = childAdapterPosition > TOP_CHILD_FLING_THRESHOLD;
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                mDownY = (int) event.getY();
+                break;
+            }
+            case MotionEvent.ACTION_MOVE: {
+                isMoving = true;
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                if (event.getY() - mDownY > 0) {
+                    isSlideUpOrDown = true;
+                } else {
+                    isSlideUpOrDown = false;
+                }
+                if (DEBUG) {
+                    Log.i(TAG, "dispatchTouchEvent: ACTION_UP " + isMoving + " ,up=" + isSlideUpOrDown);
+                }
+                if (isMoving) {
+                    smoothToPosition();
+                }
+                isMoving = false;
+                break;
+            }
         }
-        if (!consumed) {
-            animateScroll(velocityY, computeDuration(0), consumed);
-        } else {
-            animateScroll(velocityY, computeDuration(velocityY), consumed);
-        }
-        return true;
+        return super.dispatchTouchEvent(event);
     }
 
     @Override
@@ -104,140 +215,24 @@ public class NestedScrollLinearLayout extends LinearLayout implements NestedScro
 
     @Override
     public int getNestedScrollAxes() {
-        Log.i(TAG, "getNestedScrollAxes");
-        return 0;
+        return mParentHelper.getNestedScrollAxes();
     }
 
-    /**
-     * 根据速度计算滚动动画持续时间
-     *
-     * @param velocityY
-     * @return
-     */
-    private int computeDuration(float velocityY) {
-        final int distance;
-        if (velocityY > 0) {
-            distance = Math.abs(mTop.getHeight() - getScrollY());
-        } else {
-            distance = Math.abs(mTop.getHeight() - (mTop.getHeight() - getScrollY()));
-        }
-
-
-        final int duration;
-        velocityY = Math.abs(velocityY);
-        if (velocityY > 0) {
-            duration = 3 * Math.round(1000 * (distance / velocityY));
-        } else {
-            final float distanceRatio = (float) distance / getHeight();
-            duration = (int) ((distanceRatio + 1) * 150);
-        }
-
-        return duration;
-
-    }
-
-    private void animateScroll(float velocityY, final int duration, boolean consumed) {
-        final int currentOffset = getScrollY();
-        final int topHeight = mTop.getHeight();
-        if (mOffsetAnimator == null) {
-            mOffsetAnimator = new ValueAnimator();
-            mOffsetAnimator.setInterpolator(mInterpolator);
-            mOffsetAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    if (animation.getAnimatedValue() instanceof Integer) {
-                        scrollTo(0, (Integer) animation.getAnimatedValue());
-                    }
+    private void smoothToPosition() {
+        if (getScrollY() > 0 && getScrollY() < mTopViewHeight) {
+            if (isSlideUpOrDown) {
+                if (DEBUG) {
+                    Log.i(TAG, "smoothToPosition: " + getScrollY() + " to " + -getScrollY());
                 }
-            });
-        } else {
-            mOffsetAnimator.cancel();
-        }
-        mOffsetAnimator.setDuration(Math.min(duration, 600));
-
-        if (velocityY >= 0) {
-            mOffsetAnimator.setIntValues(currentOffset, topHeight);
-            mOffsetAnimator.start();
-        } else {
-            //如果子View没有消耗down事件 那么就让自身滑倒0位置
-            if (!consumed) {
-                mOffsetAnimator.setIntValues(currentOffset, 0);
-                mOffsetAnimator.start();
+                mScroller.startScroll(0, getScrollY(), 0, -getScrollY());
+                invalidate();
+            } else {
+                if (DEBUG) {
+                    Log.i(TAG, "smoothToPosition: " + getScrollY() + " to " + (150 - getScrollY()));
+                }
+                mScroller.startScroll(0, getScrollY(), 0, 150 - getScrollY());
+                invalidate();
             }
-
         }
     }
-
-
-    public NestedScrollLinearLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setOrientation(LinearLayout.VERTICAL);
-
-        mScroller = new OverScroller(context);
-        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        mMaximumVelocity = ViewConfiguration.get(context)
-                .getScaledMaximumFlingVelocity();
-        mMinimumVelocity = ViewConfiguration.get(context)
-                .getScaledMinimumFlingVelocity();
-
-    }
-
-    private void initVelocityTrackerIfNotExists() {
-        if (mVelocityTracker == null) {
-            mVelocityTracker = VelocityTracker.obtain();
-        }
-    }
-
-    private void recycleVelocityTracker() {
-        if (mVelocityTracker != null) {
-            mVelocityTracker.recycle();
-            mVelocityTracker = null;
-        }
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mTop = findViewById(R.id.nest_scroll_header);
-        mNav = findViewById(R.id.nest_scroll_pin);
-        mViewPager = (ViewPager) findViewById(R.id.nest_scroll_scroller);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        //不限制顶部的高度
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        ViewGroup.LayoutParams params = mViewPager.getLayoutParams();
-        params.height = getMeasuredHeight() - mNav.getMeasuredHeight();
-        setMeasuredDimension(getMeasuredWidth(), mTop.getMeasuredHeight() + mNav.getMeasuredHeight() + mViewPager.getMeasuredHeight());
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mTopViewHeight = mTop.getMeasuredHeight();
-        Log.i(TAG, "onSizeChanged: " + mTopViewHeight);
-    }
-
-    @Override
-    public void scrollTo(int x, int y) {
-        if (y < 0) {
-            y = 0;
-        }
-        if (y > mTopViewHeight) {
-            y = mTopViewHeight;
-        }
-        if (y != getScrollY()) {
-            super.scrollTo(x, y);
-        }
-    }
-
-    @Override
-    public void computeScroll() {
-        if (mScroller.computeScrollOffset()) {
-            scrollTo(0, mScroller.getCurrY());
-            invalidate();
-        }
-    }
-
 }

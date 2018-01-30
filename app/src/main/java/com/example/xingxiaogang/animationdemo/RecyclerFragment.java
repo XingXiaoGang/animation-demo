@@ -76,6 +76,8 @@ public class RecyclerFragment extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View item = View.inflate(parent.getContext(), R.layout.list_item_layout, null);
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            item.setLayoutParams(lp);
             Log.i(TAG, "onCreateViewHolder: ");
             return new ItemHolder(item);
         }
