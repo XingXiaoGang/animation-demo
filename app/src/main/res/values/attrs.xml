@@ -8,5 +8,18 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
+    <color name="arc_progress_color_df_1_0">#16f180</color>
+    <color name="arc_progress_color_df_1_3">#0397ff</color>
+    <color name="arc_progress_color_df_1_4">#0051ff</color>
+    <color name="arc_progress_color_df_1_1">#27a8ff</color>
+    <color name="arc_progress_color_df_1_2">#ffdc09</color>
+    <color name="arc_progress_color_df_3">#fad961</color>
+    <color name="arc_progress_color_df_5">#ff2600</color>
+    <color name="arc_progress_color_df_6">#ff1500</color>
+    <integer-array name="progress_colors_memory">
+        <item>@color/arc_progress_color_df_1_1</item>
+        <item>@color/arc_progress_color_df_1_2</item>
+        <item>@color/arc_progress_color_df_5</item>
+    </integer-array>
 
 </resources>

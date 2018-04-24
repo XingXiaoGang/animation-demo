@@ -133,8 +133,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ProgressActivity.class));
                 break;
             }
-            case R.id.snow:{
-                startActivity(new Intent(this,SnowActivity.class));
+            case R.id.snow: {
+                startActivity(new Intent(this, SnowActivity.class));
                 break;
             }
         }

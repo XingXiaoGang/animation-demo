@@ -1,5 +1,6 @@
 package com.example.xingxiaogang.animationdemo;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -13,9 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-
-import com.example.xingxiaogang.animationdemo.view.PercentLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,39 @@ public class DrawTestActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(new DrawView(this), new PercentLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//        setContentView(new DrawView(this), new PercentLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        setContentView(R.layout.activity_draw);
+
+        final View drawView = findViewById(R.id.boost_icon);
+
+        int widthDis = SizeUtils.dp2px(20);
+        int hightDis = SizeUtils.dp2px(5);
+
+        drawView.setTranslationX(-widthDis);
+        drawView.setTranslationX(-hightDis);
+
+        final ValueAnimator valueAnimatorY = ValueAnimator.ofInt(-hightDis, hightDis);
+        valueAnimatorY.setStartDelay(800);
+        valueAnimatorY.setRepeatCount(-1);
+        valueAnimatorY.setDuration(1500);
+        valueAnimatorY.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimatorY.start();
+
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(-widthDis, widthDis);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                drawView.setTranslationX((int) animation.getAnimatedValue());
+                drawView.setTranslationY((int) valueAnimatorY.getAnimatedValue());
+            }
+        });
+        valueAnimator.setStartDelay(800);
+        valueAnimator.setDuration(600);
+        valueAnimator.setRepeatCount(-1);
+        valueAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        valueAnimator.start();
+        //
 
     }
 
