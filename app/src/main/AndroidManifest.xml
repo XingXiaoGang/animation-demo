@@ -30,6 +30,9 @@
         <activity android:name=".SwitchActivity" />
         <activity android:name=".ProgressActivity" />
         <activity android:name=".SnowActivity" />
+        <activity
+            android:name=".GameActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
     </application>
 
 </manifest>

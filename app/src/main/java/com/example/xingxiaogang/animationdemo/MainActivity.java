@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, ListActivity.class));
                 break;
             }
-            case R.id.recycler:{
+            case R.id.recycler: {
                 startActivity(new Intent(this, RecylerActivity.class));
                 break;
             }
@@ -135,6 +135,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
             case R.id.snow: {
                 startActivity(new Intent(this, SnowActivity.class));
+                break;
+            }
+            case R.id.game: {
+                startActivity(new Intent(this, GameActivity.class));
                 break;
             }
         }
