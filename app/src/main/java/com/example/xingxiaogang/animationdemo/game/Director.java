@@ -44,6 +44,7 @@ public class Director implements Handler.Callback {
      **/
     public void initAssets(Context context) {
         mScene = new MainScene(Color.parseColor("#2DB5FD"));
+        mBigChicken = new BigChicken(context);
         isAssetsReady = true;
     }
 
