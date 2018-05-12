@@ -115,6 +115,16 @@ public class Director implements Handler.Callback {
         }
     }
 
+    public void onTouch(int positionX, int positionY) {
+        if (!isStart || isPause || !isAssetsReady) {
+            return;
+        }
+        if (mBigChicken != null) {
+            mBigChicken.toPositionAndBark(positionX, positionY);
+
+        }
+    }
+
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {

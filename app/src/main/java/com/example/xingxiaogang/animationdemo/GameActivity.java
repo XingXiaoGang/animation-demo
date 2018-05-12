@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.example.xingxiaogang.animationdemo.game.Director;
 
@@ -27,6 +29,23 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
         setContentView(R.layout.activity_game);
         mSurfaceView = (SurfaceView) findViewById(R.id.surface);
         mSurfaceView.getHolder().addCallback(this);
+        mSurfaceView.setClickable(true);
+        mSurfaceView.setFocusableInTouchMode(true);
+        mSurfaceView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        Log.d(TAG, "onTouch: " + event.getX() + "," + event.getY());
+                        if (mGame != null) {
+                            mGame.onTouch((int) event.getX(), (int) event.getY());
+                        }
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
         mHolder = mSurfaceView.getHolder();
     }
 
@@ -68,5 +87,8 @@ public class GameActivity extends Activity implements SurfaceHolder.Callback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mGame != null) {
+            mGame.destory();
+        }
     }
 }
