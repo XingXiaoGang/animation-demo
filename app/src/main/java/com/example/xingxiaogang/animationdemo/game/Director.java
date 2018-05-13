@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.example.xingxiaogang.animationdemo.Application;
 import com.example.xingxiaogang.animationdemo.R;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class Director implements Handler.Callback {
         logic();
         draw();
         if (isStart && !isPause) {
-            handler.sendEmptyMessageDelayed(R.id.game_loop, 30);
+            handler.sendEmptyMessageDelayed(R.id.game_loop, 6);
         }
     }
 
@@ -94,12 +95,13 @@ public class Director implements Handler.Callback {
         if (mScene != null) {
             mScene.draw(canvas);
         }
+        //小鸡
+        for (SmallChicken chicken : mSmallChickens) {
+            chicken.draw(canvas);
+        }
         //精灵
         if (mBigChicken != null) {
             mBigChicken.draw(canvas);
-        }
-        for (SmallChicken chicken : mSmallChickens) {
-            chicken.draw(canvas);
         }
         mHolder.unlockCanvasAndPost(canvas);
     }
@@ -109,6 +111,15 @@ public class Director implements Handler.Callback {
             mBigChicken.logic();
         }
         synchronized (mSmallChickens) {
+            List<SmallChicken> toRemove = new ArrayList<>();
+            for (SmallChicken chicken : mSmallChickens) {
+                if (chicken.isDead()) {
+                    toRemove.add(chicken);
+                }
+            }
+            if (toRemove.size() > 0) {
+                mSmallChickens.removeAll(toRemove);
+            }
             for (SmallChicken chicken : mSmallChickens) {
                 chicken.logic();
             }
@@ -121,8 +132,8 @@ public class Director implements Handler.Callback {
         }
         if (mBigChicken != null) {
             mBigChicken.toPositionAndBark(positionX, positionY);
-
         }
+        mSmallChickens.add(new SmallChicken(Application.sContext, positionX, positionY));
     }
 
     @Override

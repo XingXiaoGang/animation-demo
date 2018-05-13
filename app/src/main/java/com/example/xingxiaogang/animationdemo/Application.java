@@ -9,9 +9,13 @@ import com.example.xingxiaogang.animationdemo.utils.LinuxUtils;
  */
 
 public class Application extends android.app.Application {
+    public static Application sContext;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        sContext = this;
+
         String process = LinuxUtils.getCurrentProcessName();
         Log.d("Application", "onCreate: process=" + process);
     }

@@ -49,9 +49,17 @@ public class BigChicken implements ISprite {
     private int mRightLegTransY;
     private int mLegMaxTranslateY;
 
+    //多长时间后，叫
     private long mWaitForBarkTime;
     private static long mBarTime = 600;
     private static long mBarkDelayTime = 1000;
+
+
+    private static long mRunDuration = 1000;
+    //开始跑的时间
+    private long mStartRunTime;
+    private int mRunX;
+    private int mRunY;
 
     BigChicken(Context context) {
         mWidth = SizeUtils.dp2px(120);
@@ -89,6 +97,26 @@ public class BigChicken implements ISprite {
             mLeftLegTransY = (int) -((mLegDuration - time) * 1.0f / half * mLegMaxTranslateY);
             mRightLegTransY = -mLegMaxTranslateY - mLeftLegTransY;
         }
+
+        //位移
+        long runPast = System.currentTimeMillis() - mStartRunTime;
+        long eachTime = mRunDuration / 4;
+        if (runPast >= eachTime && runPast <= mRunDuration) {
+            switch ((int) (runPast / eachTime)) {
+                case 1: {
+                    mRunY = -(int) ((runPast - eachTime) * 1.0f / eachTime * mHeight * 0.6f);
+                    break;
+                }
+                case 2: {
+                    mRunX = (int) ((runPast - 2 * eachTime) * 1.0f / eachTime * mWidth * 0.7f);
+                    break;
+                }
+                case 3: {
+                    mRunY = -(int) ((mRunDuration - runPast) * 1.0f / eachTime * mHeight * 0.6f);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
@@ -96,22 +124,26 @@ public class BigChicken implements ISprite {
         canvas.save();
         float transX = 0;
         float transY = 0;
+
+        int chickenPositionX = mBodyPositionX + mRunX;
+        int chickenPositionY = mBodyPositionY + mRunY;
+
         //脚
-        transX = mLeftLegPositinX * mWidth + mBodyPositionX;
-        transY = mLeftLegPositinY * mHeight + mBodyPositionY + mLeftLegTransY;
+        transX = mLeftLegPositinX * mWidth + chickenPositionX;
+        transY = mLeftLegPositinY * mHeight + chickenPositionY + mLeftLegTransY;
         canvas.translate(transX, transY);
         mLeftLeg.draw(canvas);
         canvas.translate(-transX, -transY);
 
-        transX = mRightLegPositinX * mWidth + mBodyPositionX;
-        transY = mRightLegPositinY * mHeight + mBodyPositionY + mRightLegTransY;
+        transX = mRightLegPositinX * mWidth + chickenPositionX;
+        transY = mRightLegPositinY * mHeight + chickenPositionY + mRightLegTransY;
         canvas.translate(transX, transY);
         mRightLeg.draw(canvas);
         canvas.translate(-transX, -transY);
 
         //嘴
-        transX = mMouthPositionX * mWidth + mBodyPositionX;
-        transY = mMouthPositionY * mHeight + mBodyPositionY;
+        transX = mMouthPositionX * mWidth + chickenPositionX;
+        transY = mMouthPositionY * mHeight + chickenPositionY;
         canvas.translate(transX, transY);
         long waitForBark = System.currentTimeMillis() - mWaitForBarkTime;
         if (waitForBark > mBarkDelayTime && waitForBark < mBarkDelayTime + mBarTime) {
@@ -122,13 +154,13 @@ public class BigChicken implements ISprite {
         canvas.translate(-transX, -transY);
 
         //身体
-        canvas.translate(mBodyPositionX, mBodyPositionY);
+        canvas.translate(chickenPositionX, chickenPositionY);
         mBody.draw(canvas);
-        canvas.translate(-mBodyPositionX, -mBodyPositionY);
+        canvas.translate(-chickenPositionX, -chickenPositionY);
 
         //眼
-        transX = mEyePositionX * mWidth + mBodyPositionX;
-        transY = mEyePositionY * mHeight + mBodyPositionY;
+        transX = mEyePositionX * mWidth + chickenPositionX;
+        transY = mEyePositionY * mHeight + chickenPositionY;
         canvas.translate(transX, transY);
         mEye.draw(canvas);
         canvas.translate(-transX, -transY);
@@ -142,11 +174,13 @@ public class BigChicken implements ISprite {
     }
 
     void toPositionAndBark(int positionX, int positionY) {
-        //todo 限制区域
+        //位移到某个位置
         mBodyPositionX = positionX - mWidth / 2;
         mBodyPositionY = positionY - mHeight / 2;
-        //自己刷新
-
+        mRunX = 0;
+        mRunY = 0;
+        //跑到旁边
+        mStartRunTime = System.currentTimeMillis();
         //bark
         mWaitForBarkTime = System.currentTimeMillis();
     }
