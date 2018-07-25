@@ -141,6 +141,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, GameActivity.class));
                 break;
             }
+            case R.id.guide: {
+                startActivity(new Intent(this, VoiceGuideActivity.class));
+                break;
+            }
         }
     }
 

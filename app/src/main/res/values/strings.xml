@@ -14,4 +14,5 @@
     <!--Like this:"Tapping "Start" means you agreed "End User License Agreement and Privacy Policy"" -->
     <string name="notification_license_desc">点击\"%1$s\"，即代表您同意%2$s.</string>
     <string name="start_text">开始</string>
+    <string name="voice_time_tips">（  %d \'）</string>
 </resources>
