@@ -2,7 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion Integer.parseInt(CompileSdkVersion)
-    buildToolsVersion BuildToolsVersion
     defaultConfig {
         minSdkVersion Integer.parseInt(MinSdkVersion)
         targetSdkVersion Integer.parseInt(TargetSdkVersion)
@@ -26,6 +25,7 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+    buildToolsVersion '26.0.2'
 }
 
 dependencies {
