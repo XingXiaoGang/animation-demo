@@ -11,15 +11,23 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
+import com.example.xingxiaogang.animationdemo.BuildConfig;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+
 public class PagerTabIndicatorView extends LinearLayout {
-
-
     private Scroller mScroller;
     private int mDownX;
     private int mDownY;
     private int mDownScrollX;
     private int mTouchSlop;
     private boolean isSliding;
+    private onPagerTabSelectListener onPagerTabSelectListener;
+    private Subscription mSubscription;
 
 
     public PagerTabIndicatorView(Context context) {
@@ -51,7 +59,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        selectItem(0, true);
+        selectItem(0, true, false);
     }
 
     @Override
@@ -63,9 +71,17 @@ public class PagerTabIndicatorView extends LinearLayout {
         }
     }
 
-    private void selectItem(int viewIndex, boolean anim) {
-        if (true) {
-            Log.d("GANG-", "selectItem: 选中item :" + viewIndex + "  anim=" + anim);
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (mSubscription != null) {
+            mSubscription.unsubscribe();
+        }
+    }
+
+    private void selectItem(int viewIndex, boolean anim, boolean user) {
+        if (BuildConfig.DEBUG) {
+            Log.d("GANG", "selectItem: 选中item :" + viewIndex + "  anim=" + anim);
         }
         if (getChildCount() < viewIndex) {
             return;
@@ -76,7 +92,6 @@ public class PagerTabIndicatorView extends LinearLayout {
         }
         int center = getMeasuredWidth() / 2;
         int distance = center + child.getMeasuredWidth() / 2 - (child.getLeft() + child.getMeasuredWidth()) + getScrollX();
-        Log.d("GANG-", "selectItem: scrollX=" + getScrollX() + " distance=" + distance);
 
         if (distance != 0) {
             if (anim) {
@@ -85,6 +100,34 @@ public class PagerTabIndicatorView extends LinearLayout {
             } else {
                 scrollBy(-distance, 0);
             }
+        }
+
+        //更新状态
+        for (int i = 0; i < getChildCount(); i++) {
+            View view = getChildAt(i);
+            if (view != null) {
+                view.setActivated(view == child);
+                view.setSelected(view == child);
+            }
+        }
+
+        notifySelect(anim, viewIndex);
+    }
+
+    private void notifySelect(boolean anim, final int tabIndex) {
+        if (!anim) {
+            if (onPagerTabSelectListener != null) {
+                onPagerTabSelectListener.onPageSelect(tabIndex);
+            }
+        } else {
+            mSubscription = AndroidSchedulers.mainThread().createWorker().schedule(new Action0() {
+                @Override
+                public void call() {
+                    if (onPagerTabSelectListener != null) {
+                        onPagerTabSelectListener.onPageSelect(tabIndex);
+                    }
+                }
+            }, 300, TimeUnit.MILLISECONDS);
         }
     }
 
@@ -112,7 +155,7 @@ public class PagerTabIndicatorView extends LinearLayout {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP: {
                 isSliding = false;
-                ensureChildCenter(true);
+                ensureChildCenter(true, true);
                 break;
             }
         }
@@ -120,7 +163,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     }
 
     //保证有一个child在正中(选中)
-    private void ensureChildCenter(boolean anim) {
+    private void ensureChildCenter(boolean anim, boolean user) {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
@@ -131,11 +174,23 @@ public class PagerTabIndicatorView extends LinearLayout {
             //找到正在下方的view
             int childRight = child.getLeft() + child.getMeasuredWidth() - getScrollX();
             if (childRight >= parentCenter && child.getLeft() - getScrollX() <= parentCenter) {
-                selectItem(i, anim);
+                selectItem(i, anim, user);
+                break;
+            } else if (i == 0 && child.getLeft() - getScrollX() > parentCenter) {
+                selectItem(i, anim, user);
+                break;
+            } else if (i == count - 1 && childRight < parentCenter) {
+                selectItem(i, anim, user);
                 break;
             }
         }
     }
 
+    public void setOnPagerTabSelectListener(PagerTabIndicatorView.onPagerTabSelectListener onPagerTabSelectListener) {
+        this.onPagerTabSelectListener = onPagerTabSelectListener;
+    }
 
+    public static interface onPagerTabSelectListener {
+        void onPageSelect(int tabIndex);
+    }
 }
