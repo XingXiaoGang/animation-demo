@@ -145,6 +145,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 startActivity(new Intent(this, VoiceGuideActivity.class));
                 break;
             }
+            case R.id.waves: {
+                startActivity(new Intent(this, MusicWaveActivity.class));
+                break;
+            }
         }
     }
 

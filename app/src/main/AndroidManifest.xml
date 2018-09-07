@@ -3,6 +3,7 @@
     package="com.example.xingxiaogang.animationdemo">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Application"
@@ -37,6 +38,7 @@
             android:name=".GameActivity"
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity android:name=".VoiceGuideActivity" />
+        <activity android:name=".MusicWaveActivity" />
     </application>
 
 </manifest>
