@@ -218,6 +218,7 @@
     </ScrollView>
 
     <com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView
+        android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -230,7 +231,6 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:text="照片"
-            android:background="@drawable/indicator"
             android:textSize="14sp" />
 
         <TextView
@@ -239,7 +239,6 @@
             android:gravity="center"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
-            android:background="@drawable/indicator"
             android:text="视频"
             android:textSize="14sp" />
     </com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView>

@@ -9,6 +9,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
@@ -29,13 +30,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
+public class MainActivity extends Activity implements View.OnClickListener, PagerTabIndicatorView.onPagerTabSelectListener {
 
     private String TAG = "TEST_";
     public static int rowCount = 2;
@@ -47,6 +54,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
 
         initParticleAt(findViewById(R.id.icon));
+
+        ((PagerTabIndicatorView) findViewById(R.id.indicator)).setOnPagerTabSelectListener(this);
     }
 
     private void initParticleAt(final View view) {
@@ -69,6 +78,49 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 }
             }
         });
+
+
+        Observable.just("").doOnNext(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.i(TAG, "call:  Observable.doOnNext " + (Looper.myLooper() == Looper.getMainLooper()));
+
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.i(TAG, "call:  Observable.subscribe " + (Looper.myLooper() == Looper.getMainLooper()));
+
+            }
+        });
+
+
+//        Observable.create(new Observable.OnSubscribe<String>() {
+//            @Override
+//            public void call(Subscriber<? super String> subscriber) {
+//
+//                if (DEBUG) {
+//                    Log.i(TAG, "call:  Observable.create " + (Looper.myLooper() == Looper.getMainLooper()));
+//                }
+//                subscriber.onNext("哈哈");
+//            }
+//        }).observeOn(Schedulers.io()).map(new Func1<String, String>() {
+//            @Override
+//            public String call(String s) {
+//                if (DEBUG) {
+//                    Log.i(TAG, "call:  map " + (Looper.myLooper() == Looper.getMainLooper()));
+//                }
+//                return null;
+//            }
+//        }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<String>() {
+//            @Override
+//            public void call(String s) {
+//                if (DEBUG) {
+//                    Log.i(TAG, "call:  subscribe " + (Looper.myLooper() == Looper.getMainLooper()));
+//                }
+//            }
+//        });
+
     }
 
     @Override
@@ -152,6 +204,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onPageSelect(int tabIndex) {
+        Log.d("GANG_", "onPageSelect: 首页tab选中 index=" + tabIndex);
+    }
+
     class Dialog extends android.app.Dialog implements ViewPager.OnPageChangeListener {
         private List<ResolveInfo> intentInfos = new ArrayList<>();
         private List<CheckedTextView> mIndicators = new ArrayList<>();
@@ -206,7 +263,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             resolveInfo.nonLocalizedLabel = "设置";
             intentInfos.add(resolveInfo);
             for (ResolveInfo info : intentInfos) {
-                Log.d("TEST_", "loadShareInfos: " + info.loadLabel(pm) + "," + info.activityInfo);
+                Log.i("TEST_", "loadShareInfos: " + info.loadLabel(pm) + "," + info.activityInfo);
             }
         }
 
@@ -299,7 +356,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 for (int position = pageSize * page; position < pageSize * (page + 1) && position < mAllInfos.size(); position++) {
                     infos.add(mAllInfos.get(position));
                 }
-                Log.d(TAG, "getInfosForPage: page=" + page + " size=" + infos.size() + " all size=" + mAllInfos.size());
+                Log.i(TAG, "getInfosForPage: page=" + page + " size=" + infos.size() + " all size=" + mAllInfos.size());
                 return infos;
             }
         }
@@ -318,7 +375,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         @Override
                         public void onGlobalLayout() {
                             int childHeight = child.getMeasuredHeight();
-                            Log.d(TAG, "onGlobalLayout: " + childHeight);
+                            Log.i(TAG, "onGlobalLayout: " + childHeight);
                             //更新窗口高度
                             WindowManager.LayoutParams lp = getWindow().getAttributes();
                             DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();

@@ -64,29 +64,29 @@ public class MusicWaveActivity extends Activity implements SoundFile.ProgressLis
         dialog.setTitle("正在准备音乐");
         dialog.show();
 
-        subscription = Observable.just(getResources().openRawResource(R.raw.music)).doOnNext(new Action1<InputStream>() {
-            @Override
-            public void call(InputStream inputStream) {
-            }
-        }).map(new Func1<InputStream, String>() {
-            @Override
-            public String call(InputStream inputStream) {
-                try {
-                    return copyRawToSdCard(inputStream, musicFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "导出音乐完成", Toast.LENGTH_LONG).show();
-                mPath = s;
-                findViewById(R.id.start).performClick();
-            }
-        });
+//        subscription = Observable.just(getResources().openRawResource(R.raw.music)).doOnNext(new Action1<InputStream>() {
+//            @Override
+//            public void call(InputStream inputStream) {
+//            }
+//        }).map(new Func1<InputStream, String>() {
+//            @Override
+//            public String call(InputStream inputStream) {
+//                try {
+//                    return copyRawToSdCard(inputStream, musicFile);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                return null;
+//            }
+//        }).observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribe(new Action1<String>() {
+//            @Override
+//            public void call(String s) {
+//                dialog.dismiss();
+//                Toast.makeText(getApplicationContext(), "导出音乐完成", Toast.LENGTH_LONG).show();
+//                mPath = s;
+//                findViewById(R.id.start).performClick();
+//            }
+//        });
         return false;
     }
 
