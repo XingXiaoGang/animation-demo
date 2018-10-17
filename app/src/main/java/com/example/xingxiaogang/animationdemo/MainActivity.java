@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
 
         initParticleAt(findViewById(R.id.icon));
 
-        ((PagerTabIndicatorView) findViewById(R.id.indicator)).setOnPagerTabSelectListener(this);
+        ((PagerTabIndicatorView) findViewById(R.id.pager_indicator)).setOnPagerTabSelectListener(this);
     }
 
     private void initParticleAt(final View view) {

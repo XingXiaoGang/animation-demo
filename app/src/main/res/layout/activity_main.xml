@@ -218,29 +218,56 @@
     </ScrollView>
 
     <com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView
-        android:id="@+id/indicator"
+        android:id="@+id/pager_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="bottom|center_horizontal">
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center_horizontal"
+        android:paddingBottom="12dp"
+        android:paddingTop="8dp">
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/camera_tab_flash"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
             android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="照片"
-            android:textSize="14sp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="闪拍"
+            android:textAlignment="center"
+            android:textColor="@color/text_444"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/camera_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
             android:gravity="center"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            android:text="视频"
-            android:textSize="14sp" />
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="拍照"
+            android:textAlignment="center"
+            android:textColor="@color/text_444"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/photo_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="图库"
+            android:textAlignment="center"
+            android:textColor="@color/text_444"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
     </com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView>
 
 

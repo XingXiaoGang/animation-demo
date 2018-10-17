@@ -1,19 +1,25 @@
 package com.example.xingxiaogang.animationdemo.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewTreeObserver;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 import com.example.xingxiaogang.animationdemo.BuildConfig;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Subscription;
@@ -31,7 +37,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     private Subscription mSubscription;
 
     private boolean isChangedByUser = false;
-    private int mLastIndex = -1;
+    private int mLastIndex = -1; //默认选中的位置
 
     public PagerTabIndicatorView(Context context) {
         super(context);
@@ -51,6 +57,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     private void initView(Context context, AttributeSet atts) {
         mScroller = new Scroller(context, new LinearInterpolator());
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         setClickable(true);
     }
 
@@ -63,7 +70,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         if (!isChangedByUser) {
-            selectItem(0, false, false, true);
+            selectItem(mLastIndex, false, false, true);
         }
     }
 
@@ -109,7 +116,7 @@ public class PagerTabIndicatorView extends LinearLayout {
         mLastIndex = viewIndex;
     }
 
-    public void selectItem(int viewIndex, boolean anim, boolean vibrate, boolean notify) {
+    public void selectItem(final int viewIndex, final boolean anim, final boolean vibrate, final boolean notify) {
         if (BuildConfig.DEBUG) {
             Log.d("GANG", "selectItem: 选中item :" + viewIndex + "  anim=" + anim + "notify=" + notify + " final notify=" + (notify && (mLastIndex != viewIndex)));
         }
@@ -142,7 +149,21 @@ public class PagerTabIndicatorView extends LinearLayout {
         }
 
         if (notify && mLastIndex != viewIndex) {
-            notifySelect(anim, viewIndex, vibrate);
+            if (getMeasuredWidth() > 0) {
+                notifySelect(anim, viewIndex, vibrate);
+            } else {
+                getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        } else {
+                            getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        }
+                        notifySelect(anim, viewIndex, vibrate);
+                    }
+                });
+            }
         }
         mLastIndex = viewIndex;
     }
@@ -191,15 +212,7 @@ public class PagerTabIndicatorView extends LinearLayout {
                 }
                 if (isSliding) {
                     int position = (int) (mDownX + mDownScrollX - event.getX(active));
-                    if (position > getChildAt(0).getMeasuredWidth() / 2) {
-                        position = getChildAt(0).getMeasuredWidth() / 2;
-                        //滑动中也要切换
-                        selectItem(1, true, true);
-                    } else if (position < -getChildAt(0).getMeasuredWidth() / 2) {
-                        position = -getChildAt(0).getMeasuredWidth() / 2;
-                        selectItem(0, true, true);
-                    }
-                    scrollTo(position, 0);
+                    selectLive(position);
                 }
                 break;
             }
@@ -215,6 +228,52 @@ public class PagerTabIndicatorView extends LinearLayout {
             }
         }
         return super.onTouchEvent(event);
+    }
+
+    final List<Pair<Integer, Integer>> childCenterAera = new ArrayList<>();
+
+    private void selectLive(int position) {
+        Log.d("GANG_", "onTouchEvent:  position=" + position);
+        int childWidth = getChildAt(0).getMeasuredWidth();
+        boolean evenChild = getChildCount() % 2 == 0;
+        int centerChildIndex = getChildCount() / 2;
+        //找出每个child的中心(child要等宽)
+        if (childCenterAera.isEmpty()) {
+            int start = evenChild ? childWidth / 2 : 0;
+            for (int i = 0; i < centerChildIndex; i++) {
+                int center = -(centerChildIndex - i) * childWidth + start;
+                childCenterAera.add(new Pair<Integer, Integer>(center, i));
+            }
+            for (int i = centerChildIndex; i < getChildCount(); i++) {
+                int center = (i - centerChildIndex) * childWidth + start;
+                childCenterAera.add(new Pair<Integer, Integer>(center, i));
+            }
+
+            StringBuilder sb = new StringBuilder();
+            for (Pair<Integer, Integer> pair : childCenterAera) {
+                sb.append("index: ").append(pair.second).append(",center: ").append(pair.first).append(" | ");
+            }
+            Log.i("GANG_", "childWidth " + childWidth + " ,centerChildIndex " + centerChildIndex + " , positions " + sb);
+        }
+
+        int left = childCenterAera.get(0).first;
+        if (position < left) {
+            position = left;
+        }
+        int right = childCenterAera.get(childCenterAera.size() - 1).first;
+        if (position > right) {
+            position = right;
+        }
+
+        //遍历
+        int hitSize = Math.max(childWidth / 6, 2);
+        for (Pair<Integer, Integer> pair : childCenterAera) {
+            if (position >= pair.first - hitSize && position <= pair.first + hitSize) {
+                selectItem(pair.second, true, true);
+                break;
+            }
+        }
+        scrollTo(position, 0);
     }
 
     private void performChildClick(int x) {
