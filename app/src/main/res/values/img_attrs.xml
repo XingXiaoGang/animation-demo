@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SizeBaseImageView">
-        <attr name="src" format="reference" />
-        <attr name="imageScale" format="float" />
+    <declare-styleable name="CornerFrameLayout">
         <attr name="radius" format="dimension" />
-        <attr name="angleWidth" format="dimension" />
-        <attr name="baseWith" format="enum">
-            <enum name="height" value="0" />
-            <enum name="width" value="1" />
-        </attr>
+        <attr name="leftTopRadius" format="dimension" />
+        <attr name="leftBottomRadius" format="dimension" />
+        <attr name="rightTopRadius" format="dimension" />
+        <attr name="rightBottomRadius" format="dimension" />
     </declare-styleable>
 </resources>

@@ -5,11 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.example.xingxiaogang.animationdemo.view.ColorDotLoadingDrawable;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +22,7 @@ import java.util.List;
  */
 
 public class ImageActivity extends Activity {
-
+    private VideoView mVideoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class ImageActivity extends Activity {
         }
         System.out.println("耗时：" + (System.currentTimeMillis() - time));
 
+
+        //变暗
         final ImageView imageView = ((ImageView) findViewById(R.id.gray_icon));
         imageView.setImageResource(R.drawable.icon_retry);
         imageView.postDelayed(new Runnable() {
@@ -54,5 +60,32 @@ public class ImageActivity extends Activity {
                 imageView.setImageBitmap(bitmap);
             }
         }, 2000);
+
+        playMp4();
+    }
+
+
+    private void playMp4() {
+        if (!new File("/storage/emulated/0/Ingkee/vr/video/67a40e8c-8688-4882-a833-e5814fe8f2ed.mp4").exists()) {
+            return;
+        }
+        mVideoView = (VideoView) findViewById(R.id.video_view);
+        mVideoView.setVideoPath("/storage/emulated/0/Ingkee/vr/video/67a40e8c-8688-4882-a833-e5814fe8f2ed.mp4");
+        mVideoView.setMediaController(new MediaController(this));
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.seekTo(0);
+            }
+        });
+        mVideoView.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mVideoView != null) {
+            mVideoView.suspend();
+        }
     }
 }

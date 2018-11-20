@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initParticleAt(findViewById(R.id.icon));
+//        initParticleAt(findViewById(R.id.icon));
 
         ((PagerTabIndicatorView) findViewById(R.id.pager_indicator)).setOnPagerTabSelectListener(this);
     }
@@ -199,6 +199,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
             }
             case R.id.waves: {
                 startActivity(new Intent(this, MusicWaveActivity.class));
+                break;
+            }
+            case R.id.flow_layout: {
+                startActivity(new Intent(this, FlowLayoutActivity.class));
                 break;
             }
         }

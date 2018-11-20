@@ -39,6 +39,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity android:name=".VoiceGuideActivity" />
         <activity android:name=".MusicWaveActivity" />
+        <activity android:name=".FlowLayoutActivity" />
     </application>
 
 </manifest>
