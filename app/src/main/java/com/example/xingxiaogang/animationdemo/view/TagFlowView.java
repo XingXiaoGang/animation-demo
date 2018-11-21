@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.example.xingxiaogang.animationdemo.SizeUtils;
@@ -21,26 +20,25 @@ import java.util.List;
  * Created by xinggang on 2018/11/20 下午4:26.
  * <p>
  * email: xxg841076938@gmail.com
- * use:
+ * use:标签控件,流式布局
  **/
-public class FlowLayoutView extends View {
-    private static final String TAG = "FlowLayoutView";
-
-    public FlowLayoutView(Context context) {
-        super(context);
-    }
-
-    public FlowLayoutView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public FlowLayoutView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+public class TagFlowView extends View {
 
     private final List<LabelItem> mItems = new ArrayList<>();
     private Paint mPaint = new Paint();
     private int mMaxRows;
+
+    public TagFlowView(Context context) {
+        super(context);
+    }
+
+    public TagFlowView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public TagFlowView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
     public void setLabels(@NonNull List<LabelItem> drawables) {
         this.mItems.clear();
@@ -55,6 +53,7 @@ public class FlowLayoutView extends View {
             int tempHeight = 0;
             int tmpRows = 0;
             int lineHeight = 0;
+            boolean isMaxRows = false;
             for (int i = 0; i < mItems.size(); i++) {
                 LabelItem item = mItems.get(i);
                 mPaint.setTextSize(item.textSize);
@@ -63,20 +62,19 @@ public class FlowLayoutView extends View {
                     lineHeight = (int) (Math.abs(mPaint.descent() + mPaint.ascent()) + item.topBottom * 2);
                 }
                 if (tempWidth + w > width) {
-                    Log.d(TAG, "onMeasure: 换行 tempWidth=" + tempWidth + " w=" + w);
                     tempWidth = 0;
                     tempHeight += lineHeight;
                     tmpRows++;
-                    if (mMaxRows > 0 && tmpRows == mMaxRows + 1) {
+                    if (mMaxRows > 0 && tmpRows == mMaxRows) {
+                        isMaxRows = true;
                         break;
                     }
                     tempHeight += item.itemVerticalMargin;
                 }
                 item.set(tempWidth, tempHeight, lineHeight, w);
-                tempWidth += w + item.itemHorizantalmargin;
-                Log.d(TAG, "onMeasure: item=" + item.displayRect + " index=" + i);
+                tempWidth += w + item.itemHorizontalMargin;
             }
-            tempHeight = tempHeight + lineHeight;
+            tempHeight = isMaxRows ? tempHeight : tempHeight + lineHeight;
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(tempHeight, MeasureSpec.EXACTLY);
             setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
         } else {
@@ -87,45 +85,44 @@ public class FlowLayoutView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(Color.rgb(200, 200, 150));
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
         for (LabelItem item : mItems) {
-            item.draw(canvas, mPaint);
+            if (item.isLayout) {
+                item.draw(canvas, mPaint);
+            }
         }
     }
 
-    public void setmMaxRows(int mMaxRows) {
+    public void setMaxRows(int mMaxRows) {
         this.mMaxRows = mMaxRows;
     }
 
     public static class LabelItem {
-        final float density = Resources.getSystem().getDisplayMetrics().density;
-
+        private final float density = Resources.getSystem().getDisplayMetrics().density;
         private final RectF displayRect = new RectF();
+        private boolean isLayout;
+
         public String text;
-        public int textColor = Color.WHITE;
+        public int textColor;
+        public int bgColor;
         public float textSize = SizeUtils.sp2px(12);
-        public int bgColor = Color.GRAY;
         public int bgRadius = (int) (density * 6);
+
         public int topBottom = (int) (density * 6);
         public int leftRight = (int) (density * 8);
         public int itemVerticalMargin = (int) (density * 8);
-        public int itemHorizantalmargin = (int) (density * 8);
+        public int itemHorizontalMargin = (int) (density * 8);
 
-        private int textWidth;
-
-        public LabelItem() {
-        }
-
-        public LabelItem(String text, int bgColor) {
+        public LabelItem(String text, int textColor, int bgColor) {
             this.text = text;
+            this.textColor = textColor;
             this.bgColor = bgColor;
         }
 
         private void set(int left, int top, int height, int with) {
-            this.textWidth = with;
             displayRect.set(left, top, left + with, top + height);
+            isLayout = true;
         }
 
         public void draw(Canvas canvas, Paint paint) {

@@ -7,7 +7,7 @@
     android:paddingTop="16dp"
     android:paddingRight="70dp">
 
-    <com.example.xingxiaogang.animationdemo.view.FlowLayoutView
+    <com.example.xingxiaogang.animationdemo.view.TagFlowView
         android:id="@+id/flow_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
