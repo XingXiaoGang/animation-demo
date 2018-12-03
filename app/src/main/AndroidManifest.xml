@@ -15,7 +15,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.DeviceDefault.Light">
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,6 +40,10 @@
         <activity android:name=".VoiceGuideActivity" />
         <activity android:name=".MusicWaveActivity" />
         <activity android:name=".FlowLayoutActivity" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
     </application>
 
 </manifest>

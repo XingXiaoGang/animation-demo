@@ -34,20 +34,21 @@ public class FlowLayoutActivity extends Activity {
         List<TagFlowView.LabelItem> labelItems = new ArrayList<>();
         int textColor = Color.parseColor("#666666");
         labelItems.add(new TagFlowView.LabelItem("情话", textColor, getLabelColor("电影")));
-        labelItems.add(new TagFlowView.LabelItem("乡愁", textColor, getLabelColor("书籍")));
-        labelItems.add(new TagFlowView.LabelItem("这个杀手不太冷", textColor, getLabelColor("电影")));
-        labelItems.add(new TagFlowView.LabelItem("城府", textColor, getLabelColor("音乐")));
-        labelItems.add(new TagFlowView.LabelItem("北京", textColor, getLabelColor("地方")));
-        labelItems.add(new TagFlowView.LabelItem("三明治", textColor, getLabelColor("美食")));
-        labelItems.add(new TagFlowView.LabelItem("情话", textColor, getLabelColor("电影")));
-        labelItems.add(new TagFlowView.LabelItem("乡愁啊", textColor, getLabelColor("书籍")));
-        labelItems.add(new TagFlowView.LabelItem("这个杀手不太冷啊啊", textColor, getLabelColor("电影")));
-        labelItems.add(new TagFlowView.LabelItem("城城府城府城府城府城府府", textColor, getLabelColor("音乐")));
-        labelItems.add(new TagFlowView.LabelItem("北京", textColor, getLabelColor("地方")));
-        labelItems.add(new TagFlowView.LabelItem("三明治", textColor, getLabelColor("美食")));
+//        labelItems.add(new TagFlowView.LabelItem("乡愁", textColor, getLabelColor("书籍")));
+//        labelItems.add(new TagFlowView.LabelItem("这个杀手不太冷", textColor, getLabelColor("电影")));
+//        labelItems.add(new TagFlowView.LabelItem("城府", textColor, getLabelColor("音乐")));
+//        labelItems.add(new TagFlowView.LabelItem("北京", textColor, getLabelColor("地方")));
+//        labelItems.add(new TagFlowView.LabelItem("三明治", textColor, getLabelColor("美食")));
+//        labelItems.add(new TagFlowView.LabelItem("情话", textColor, getLabelColor("电影")));
+//        labelItems.add(new TagFlowView.LabelItem("乡愁啊", textColor, getLabelColor("书籍")));
+//        labelItems.add(new TagFlowView.LabelItem("这个杀手不太冷啊啊", textColor, getLabelColor("电影")));
+//        labelItems.add(new TagFlowView.LabelItem("城城府城府城府城府城府府", textColor, getLabelColor("音乐")));
+//        labelItems.add(new TagFlowView.LabelItem("北京", textColor, getLabelColor("地方")));
+//        labelItems.add(new TagFlowView.LabelItem("三明治", textColor, getLabelColor("美食")));
         mFlowLabelView.setLabels(labelItems);
-//        mFlowLabelView.setMaxRows(2);
+        mFlowLabelView.setMaxRows(2);
     }
+
 
     private int getLabelColor(String type) {
         int color = Color.parseColor("#DDF7FF");

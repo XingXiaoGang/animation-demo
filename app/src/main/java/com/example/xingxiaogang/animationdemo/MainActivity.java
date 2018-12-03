@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,8 +55,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         setContentView(R.layout.activity_main);
 
 //        initParticleAt(findViewById(R.id.icon));
-
-        ((PagerTabIndicatorView) findViewById(R.id.pager_indicator)).setOnPagerTabSelectListener(this);
     }
 
     private void initParticleAt(final View view) {
@@ -211,6 +210,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
     @Override
     public void onPageSelect(int tabIndex) {
         Log.d("GANG_", "onPageSelect: 首页tab选中 index=" + tabIndex);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i(TAG, "onConfigurationChanged: " + newConfig);
     }
 
     class Dialog extends android.app.Dialog implements ViewPager.OnPageChangeListener {

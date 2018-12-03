@@ -43,6 +43,9 @@ public class TagFlowView extends View {
     public void setLabels(@NonNull List<LabelItem> drawables) {
         this.mItems.clear();
         this.mItems.addAll(drawables);
+        if (getMeasuredHeight() > 0) {
+            requestLayout();
+        }
     }
 
     @Override
@@ -85,6 +88,7 @@ public class TagFlowView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawColor(Color.parseColor("#aabb44"));
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
         for (LabelItem item : mItems) {

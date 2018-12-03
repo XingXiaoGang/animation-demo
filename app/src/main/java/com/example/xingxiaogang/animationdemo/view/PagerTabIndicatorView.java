@@ -1,6 +1,7 @@
 package com.example.xingxiaogang.animationdemo.view;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Vibrator;
 import android.support.v4.view.MotionEventCompat;
@@ -64,6 +65,7 @@ public class PagerTabIndicatorView extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        Log.i("TEST_", "onConfigurationChanged: onMeasure");
     }
 
     @Override
@@ -89,6 +91,12 @@ public class PagerTabIndicatorView extends LinearLayout {
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+            Log.i("TEST_", "onConfigurationChanged: PagerTabIndicatorView");
     }
 
     public void selectItem(int viewIndex, boolean vibrate, boolean notify) {
