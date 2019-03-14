@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -33,6 +34,10 @@ import android.widget.TextView;
 
 import com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
+import com.facebook.common.util.UriUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
@@ -54,7 +59,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        initParticleAt(findViewById(R.id.icon));
+        initParticleAt(findViewById(R.id.icon));
+
+        playWebp();
     }
 
     private void initParticleAt(final View view) {
@@ -120,6 +127,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
 //            }
 //        });
 
+    }
+
+    private void playWebp() {
+        SimpleDraweeView draweeView = (SimpleDraweeView) findViewById(R.id.img_user_type_effect);
+        Uri uri = new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(String.valueOf(R.drawable.user_noble_king_border))
+                .build();
+        DraweeController draweeController = Fresco.newDraweeControllerBuilder()
+                .setUri(uri)
+                .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
+                .build();
+        draweeView.setController(draweeController);
     }
 
     @Override

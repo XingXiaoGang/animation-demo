@@ -28,4 +28,18 @@ dependencies {
     compile project(':lib_drag')
     implementation 'io.reactivex:rxjava:1.1.6'
     implementation 'io.reactivex:rxandroid:1.2.1'
+
+    api("com.facebook.fresco:fresco:${fresco}") {
+        exclude group: 'com.android.support'
+    }
+    api("com.facebook.fresco:animated-gif:${fresco}") {
+        exclude group: 'com.android.support'
+    }
+    // 支持 WebP （静态图+动图），需要添加
+    api("com.facebook.fresco:animated-webp:${fresco}") {
+        exclude group: 'com.android.support'
+    }
+    api("com.facebook.fresco:webpsupport:${fresco}") {
+        exclude group: 'com.android.support'
+    }
 }
