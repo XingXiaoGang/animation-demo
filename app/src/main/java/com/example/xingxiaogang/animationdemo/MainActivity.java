@@ -1,5 +1,6 @@
 package com.example.xingxiaogang.animationdemo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +32,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
@@ -42,6 +44,7 @@ import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -62,6 +65,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         initParticleAt(findViewById(R.id.icon));
 
         playWebp();
+
+        setPhoneState(true);
     }
 
     private void initParticleAt(final View view) {
@@ -140,6 +145,42 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
                 .setAutoPlayAnimations(true) // 设置加载图片完成后是否直接进行播放
                 .build();
         draweeView.setController(draweeController);
+    }
+
+    private void setPhoneState(boolean fist) {
+        requestPermission(Manifest.permission.READ_PHONE_STATE, new Callable() {
+            @Override
+            public Object call() throws Exception {
+                ((TextView) findViewById(R.id.title)).setText(String.valueOf(Build.ID)+"||"+Build.getSerial());
+                return null;
+            }
+        }, REQ_ID_PHONE_STATE, fist);
+    }
+
+    private static final int REQ_ID_PHONE_STATE = 111;
+
+    void requestPermission(String permission, Callable callable, int requestId, boolean first) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (first) {
+                requestPermissions(new String[]{permission}, requestId);
+            } else {
+                Toast.makeText(this, "获取权限失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQ_ID_PHONE_STATE) {
+            setPhoneState(false);
+        }
     }
 
     @Override

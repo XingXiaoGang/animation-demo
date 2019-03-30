@@ -89,7 +89,7 @@ public class FocusView extends FrameLayout {
             int endx = getWidth() / 2;
             int endy = getHeight();
 
-            int count = canvas.saveLayerAlpha(getLeft(), getTop(), getRight(), getBottom(), 255, Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+            int count = canvas.saveLayerAlpha(getLeft(), getTop(), getRight(), getBottom(), 255, Canvas.ALL_SAVE_FLAG);
             mFocusPaint.setXfermode(null);
             canvas.drawColor(mCoverColor);
             mFocusPaint.setXfermode(porterDuffXfermode);
