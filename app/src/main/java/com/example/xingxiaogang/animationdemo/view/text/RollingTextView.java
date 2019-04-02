@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -21,7 +22,9 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
     private TextView mTextTop;
     private TextView mBottomDown;
 
-    private final Queue<String> mDatas = new ArrayDeque<>();
+    private final Queue<String> mQueueDatas = new ArrayDeque<>();
+    private final List<String> mArrayDatas = new ArrayList<>();
+    private int mCurrentIndex;
     private static final int ID_LOOP = 1000;
     private static final int DURATION = 600;
     private boolean isLooping = false;
@@ -59,23 +62,40 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case ID_LOOP: {
-                String text = mDatas.poll();
+                String text = getNextData();
                 mTextTop.setText(mBottomDown.getText());
                 mBottomDown.setText(text);
-                rollAnim();
+                performRollAnim();
                 break;
             }
         }
         return false;
     }
 
-    public void addDatas(List<String> texts) {
-        mDatas.addAll(texts);
+    public RollingTextView setAutoRemove(boolean autoRemove) {
+        this.autoRemove = autoRemove;
+        if (autoRemove) {
+            mQueueDatas.addAll(mArrayDatas);
+            mArrayDatas.clear();
+        } else {
+            mArrayDatas.addAll(mQueueDatas);
+            mQueueDatas.clear();
+        }
+        return this;
+    }
+
+    public RollingTextView addData(List<String> texts) {
+        if (autoRemove) {
+            mQueueDatas.addAll(texts);
+        } else {
+            mArrayDatas.addAll(texts);
+        }
         if (!isLooping) {
             resetChildrenPosition();
             loop();
             isLooping = true;
         }
+        return this;
     }
 
     /**
@@ -96,7 +116,22 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
         mBottomDown = (TextView) getChildAt(1);
     }
 
-    private void rollAnim() {
+    private void resetChildrenPosition() {
+        if (mTextTop == null || mBottomDown == null) {
+            return;
+        }
+        mTextTop.setTranslationY(0);
+        mTextTop.setPivotY(mTextTop.getMeasuredHeight());
+        mBottomDown.setTranslationY(mBottomDown.getMeasuredHeight());
+        mBottomDown.setAlpha(0);
+        mBottomDown.setPivotY(0);
+
+        String txt = getNextData();
+        mTextTop.setText(txt);
+        mBottomDown.setText(txt);
+    }
+
+    private void performRollAnim() {
         {
             int height = mTextTop.getMeasuredHeight();
             PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1, 0.9f, 0.7f, 0);
@@ -125,27 +160,22 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
         }
     }
 
-    private void resetChildrenPosition() {
-        if (mTextTop == null || mBottomDown == null) {
-            return;
-        }
-        mTextTop.setTranslationY(0);
-        mTextTop.setPivotY(mTextTop.getMeasuredHeight());
-        mBottomDown.setTranslationY(mBottomDown.getMeasuredHeight());
-        mBottomDown.setAlpha(0);
-        mBottomDown.setPivotY(0);
-
-        String txt = mDatas.poll();
-        mTextTop.setText(txt);
-        mBottomDown.setText(txt);
-    }
-
     private void loop() {
-        if (mDatas.size() > 0) {
+        if (autoRemove && mQueueDatas.size() > 0 || !autoRemove && mArrayDatas.size() > 0) {
             mHandler.removeMessages(ID_LOOP);
             mHandler.sendEmptyMessageDelayed(ID_LOOP, 1000);
         } else {
             isLooping = false;
+        }
+    }
+
+    private String getNextData() {
+        if (autoRemove) {
+            return mQueueDatas.poll();
+        } else {
+            String obj = mArrayDatas.size() > 0 ? mArrayDatas.get(mCurrentIndex % mArrayDatas.size()) : null;
+            mCurrentIndex++;
+            return obj;
         }
     }
 

@@ -70,7 +70,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
 
         setPhoneState(true);
 
-        ((RollingTextView) findViewById(R.id.roll_text_view)).addDatas(Arrays.asList("一条滚动的文本",
+        ((RollingTextView) findViewById(R.id.roll_text_view)).setAutoRemove(false).addData(Arrays.asList("一条滚动的文本",
                 "二条滚动的文本", "三条滚动的文本"
                 , "四条滚动的文本", "五条滚动的文本"
                 , "112条滚动的文本", "12条滚动的文本"
