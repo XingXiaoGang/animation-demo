@@ -103,6 +103,34 @@
                     android:textSize="12sp" />
             </RelativeLayout>
 
+            <com.example.xingxiaogang.animationdemo.view.text.RollingTextView
+                android:id="@+id/roll_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:clipChildren="false"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+            </com.example.xingxiaogang.animationdemo.view.text.RollingTextView>
+
             <Button
                 android:id="@+id/start"
                 android:layout_width="match_parent"

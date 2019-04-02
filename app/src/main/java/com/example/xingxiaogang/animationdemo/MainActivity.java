@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.example.xingxiaogang.animationdemo.view.PagerTabIndicatorView;
 import com.example.xingxiaogang.animationdemo.view.RadarView;
+import com.example.xingxiaogang.animationdemo.view.text.RollingTextView;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -43,6 +44,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -67,6 +69,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         playWebp();
 
         setPhoneState(true);
+
+        ((RollingTextView) findViewById(R.id.roll_text_view)).addDatas(Arrays.asList("一条滚动的文本",
+                "二条滚动的文本", "三条滚动的文本"
+                , "四条滚动的文本", "五条滚动的文本"
+                , "112条滚动的文本", "12条滚动的文本"
+                , "四条滚12动的文本", "五212条滚动的文本"
+                , "四条滚1212动的文本", "五12条滚动的文本"
+                , "四条滚动3343的文本", "五条滚动4的文本"));
     }
 
     private void initParticleAt(final View view) {
@@ -151,7 +161,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
         requestPermission(Manifest.permission.READ_PHONE_STATE, new Callable() {
             @Override
             public Object call() throws Exception {
-                ((TextView) findViewById(R.id.title)).setText(String.valueOf(Build.ID)+"||"+Build.getSerial());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    ((TextView) findViewById(R.id.title)).setText(String.valueOf(Build.ID) + "||" + Build.getSerial());
+                }
                 return null;
             }
         }, REQ_ID_PHONE_STATE, fist);
