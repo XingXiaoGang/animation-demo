@@ -46,6 +46,7 @@ import com.plattysoft.leonids.ParticleSystem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
@@ -70,13 +71,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
 
         setPhoneState(true);
 
-        ((RollingTextView) findViewById(R.id.roll_text_view)).setAutoRemove(false).addData(Arrays.asList("一条滚动的文本",
-                "二条滚动的文本", "三条滚动的文本"
-                , "四条滚动的文本", "五条滚动的文本"
-                , "112条滚动的文本", "12条滚动的文本"
-                , "四条滚12动的文本", "五212条滚动的文本"
-                , "四条滚1212动的文本", "五12条滚动的文本"
-                , "四条滚动3343的文本", "五条滚动4的文本"));
+        ((RollingTextView) findViewById(R.id.roll_text_view)).setAutoRemove(true).addData(
+                Arrays.asList(new RollingTextView.RollingTextData("毛线进入直播间", 2000),
+                        new RollingTextView.RollingTextData("1111进入直播间"),
+                        new RollingTextView.RollingTextData("2222进入直播间"),
+                        new RollingTextView.RollingTextData("3333进入直播间"),
+                        new RollingTextView.RollingTextData("4444进入直播间"),
+                        new RollingTextView.RollingTextData("5555进入直播间", 500),
+                        new RollingTextView.RollingTextData("6666进入直播间")));
     }
 
     private void initParticleAt(final View view) {
@@ -204,6 +206,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Page
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.add_roll_data: {
+                List<RollingTextView.RollingTextData> list = new ArrayList<>();
+                Random random = new Random(System.currentTimeMillis());
+                for (int i = 0; i < 10; i++) {
+                    list.add(new RollingTextView.RollingTextData(random.nextFloat() * 100 + " 进入直播间", 500));
+                }
+                ((RollingTextView) findViewById(R.id.roll_text_view)).addData(list);
+                break;
+            }
             case R.id.start: {
                 ((RadarView) findViewById(R.id.icon)).start();
                 break;

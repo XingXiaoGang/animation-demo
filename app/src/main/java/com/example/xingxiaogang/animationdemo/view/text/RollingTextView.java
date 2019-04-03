@@ -7,6 +7,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,11 +23,12 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
     private TextView mTextTop;
     private TextView mBottomDown;
 
-    private final Queue<String> mQueueDatas = new ArrayDeque<>();
-    private final List<String> mArrayDatas = new ArrayList<>();
+    private final Queue<RollingTextData> mQueueDatas = new ArrayDeque<>();
+    private final List<RollingTextData> mArrayDatas = new ArrayList<>();
     private int mCurrentIndex;
     private static final int ID_LOOP = 1000;
-    private static final int DURATION = 600;
+    private static final int ANIM_DURATION = 600;
+    private static final int LOOP_DURATION = 1000;
     private boolean isLooping = false;
     private boolean autoRemove = true;
     private Handler mHandler;
@@ -55,17 +57,26 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
         super.onLayout(changed, l, t, r, b);
 
         initChildren();
-        resetChildrenPosition();
+        if (!isLooping) {
+            resetChildrenPositionAndLoop();
+        }
     }
 
     @Override
     public boolean handleMessage(Message msg) {
         switch (msg.what) {
             case ID_LOOP: {
-                String text = getNextData();
-                mTextTop.setText(mBottomDown.getText());
-                mBottomDown.setText(text);
-                performRollAnim();
+                RollingTextData text = getNextData();
+                if (text != null) {
+                    mTextTop.setText(mBottomDown.getText());
+                    mBottomDown.setText(text.text);
+                    performRollAnim(text.duration);
+                } else {
+                    //没有更多数据了
+                    mTextTop.setText(mBottomDown.getText());
+                    mBottomDown.setText("");
+                    performRollAnim(-1);
+                }
                 break;
             }
         }
@@ -84,16 +95,14 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
         return this;
     }
 
-    public RollingTextView addData(List<String> texts) {
+    public RollingTextView addData(List<RollingTextData> texts) {
         if (autoRemove) {
             mQueueDatas.addAll(texts);
         } else {
             mArrayDatas.addAll(texts);
         }
         if (!isLooping) {
-            resetChildrenPosition();
-            loop();
-            isLooping = true;
+            resetChildrenPositionAndLoop();
         }
         return this;
     }
@@ -116,64 +125,64 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
         mBottomDown = (TextView) getChildAt(1);
     }
 
-    private void resetChildrenPosition() {
+    private synchronized void resetChildrenPositionAndLoop() {
         if (mTextTop == null || mBottomDown == null) {
             return;
         }
-        mTextTop.setTranslationY(0);
         mTextTop.setPivotY(mTextTop.getMeasuredHeight());
-        mBottomDown.setTranslationY(mBottomDown.getMeasuredHeight());
-        mBottomDown.setAlpha(0);
         mBottomDown.setPivotY(0);
-
-        String txt = getNextData();
-        mTextTop.setText(txt);
-        mBottomDown.setText(txt);
+        isLooping = true;
+        loop(0);
     }
 
-    private void performRollAnim() {
+    private void performRollAnim(final long duration) {
         {
             int height = mTextTop.getMeasuredHeight();
             PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1, 0.9f, 0.7f, 0);
             PropertyValuesHolder translateY = PropertyValuesHolder.ofFloat("translationY", 0, -height);
-            PropertyValuesHolder rotate = PropertyValuesHolder.ofFloat("rotationX", 0, 65);
+            PropertyValuesHolder rotate = PropertyValuesHolder.ofFloat("rotationX", 0, 90);
             ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mTextTop, alpha, translateY, rotate);
-            animator.setDuration(DURATION);
+            animator.setDuration(ANIM_DURATION);
             animator.start();
         }
         {
             int height = mBottomDown.getMeasuredHeight();
-            PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.9f, 1);
+            PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.8f, 1);
             PropertyValuesHolder translateY = PropertyValuesHolder.ofFloat("translationY", height, 0);
             PropertyValuesHolder rotate = PropertyValuesHolder.ofFloat("rotationX", -90, 0);
             ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mBottomDown, alpha, translateY, rotate);
-            animator.setDuration(DURATION);
+            animator.setDuration(ANIM_DURATION);
             animator.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
                     //循环
-                    loop();
+                    loop(duration);
                 }
             });
             animator.start();
         }
     }
 
-    private void loop() {
-        if (autoRemove && mQueueDatas.size() > 0 || !autoRemove && mArrayDatas.size() > 0) {
-            mHandler.removeMessages(ID_LOOP);
-            mHandler.sendEmptyMessageDelayed(ID_LOOP, 1000);
-        } else {
+    private void loop(long duration) {
+        if (duration < 0) {
             isLooping = false;
+            return;
+        }
+        boolean hasData = autoRemove && mQueueDatas.size() > 0 || !autoRemove && mArrayDatas.size() > 0;
+        boolean hasLastData = !TextUtils.isEmpty(mTextTop.getText()) || !TextUtils.isEmpty(mBottomDown.getText());
+        if (hasData || hasLastData) {
+            mHandler.removeMessages(ID_LOOP);
+            //如果没数据了，最后一条一秒后消失
+            mHandler.sendEmptyMessageDelayed(ID_LOOP, hasData ? duration : LOOP_DURATION);
         }
     }
 
-    private String getNextData() {
+    private RollingTextData getNextData() {
         if (autoRemove) {
             return mQueueDatas.poll();
         } else {
-            String obj = mArrayDatas.size() > 0 ? mArrayDatas.get(mCurrentIndex % mArrayDatas.size()) : null;
+            RollingTextData obj = mArrayDatas.size() > 0 ? mArrayDatas.get(mCurrentIndex % mArrayDatas.size()) : null;
             mCurrentIndex++;
             return obj;
         }
@@ -183,5 +192,21 @@ public class RollingTextView extends FrameLayout implements Handler.Callback {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mHandler.removeCallbacksAndMessages(null);
+    }
+
+    public static class RollingTextData {
+        //要显示的文本
+        public String text;
+        //显示多长时间
+        public int duration = LOOP_DURATION;
+
+        public RollingTextData(String text) {
+            this.text = text;
+        }
+
+        public RollingTextData(String text, int duration) {
+            this.text = text;
+            this.duration = duration;
+        }
     }
 }
